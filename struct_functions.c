@@ -24,3 +24,13 @@ gameobj *new_duck(const char *path_sprite, sfVector2f pos)
     sfSprite_setTextureRect(obj->sprite, obj->rect);
     return obj;
 }
+
+void animate(gameobj *obj, int offset, int max)
+{
+    printf("%d\n", obj->rect.left);
+    if (obj->rect.left + offset >= max)
+        obj->rect.left = 0;
+    else
+        obj->rect.left += offset;
+    sfSprite_setTextureRect(obj->sprite, obj->rect);
+}

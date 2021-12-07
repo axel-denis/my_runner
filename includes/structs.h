@@ -17,3 +17,4 @@ typedef struct gameobj {
 } gameobj;
 
 gameobj *new_duck(const char *path_sprite, sfVector2f pos);
+void move_rect(sfIntRect *rect, int offset, int max);
