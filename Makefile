@@ -5,8 +5,8 @@
 ## Makefile
 ##
 
-SRC	=	main.c				\
-		struct_functions.c
+SRC	=	src/main.c				\
+		src/struct_functions.c
 
 OBJ	=	$(SRC:.c=.o)
 

@@ -5,9 +5,9 @@
 ** main.c
 */
 
-#include "includes/csfml.h"
-#include "includes/consts.h"
-#include "includes/structs.h"
+#include "../includes/csfml.h"
+#include "../includes/consts.h"
+#include "../includes/structs.h"
 
 void event_handeling(sfEvent event, sfRenderWindow *window, gameobj *obj)
 {
@@ -36,12 +36,10 @@ void event_handeling(sfEvent event, sfRenderWindow *window, gameobj *obj)
     }
 }
 
-void main(void)
+sfRenderWindow *create_window(void)
 {
-    sfEvent event;
-    sfRenderWindow *window;
     sfVideoMode video_mode;
-    sfVector2f testpos;
+    sfRenderWindow *window;
 
     video_mode.width = WIDTH;
     video_mode.height = HEIGHT;
@@ -49,12 +47,31 @@ void main(void)
     window = sfRenderWindow_create(video_mode, "RABBIT",
     sfDefaultStyle | sfClose | sfResize, NULL);
     sfRenderWindow_setFramerateLimit(window, 60);
-    gameobj *obj = new_duck("sprite.png", testpos);
+    return window;
+}
+
+void main(void)
+{
+    sfEvent event;
+    sfRenderWindow *window = create_window();
+    sfVector2f testpos;
+    sfClock *clock = sfClock_create();
+    sfTime time;
+    float seconds;
+
+    gameobj *obj = new_duck("assets/sprite.png", testpos);
+    parallax *bg = new_parallax(window);
     while (sfRenderWindow_isOpen(window)) {
         sfRenderWindow_clear(window, sfBlack);
         sfRenderWindow_drawSprite(window, obj->sprite, NULL);
+        time = sfClock_getElapsedTime(clock);
+        seconds = time.microseconds / 1000000.0;
+        display_parallax(bg, window);
         sfRenderWindow_display(window);
-        animate(obj, 110, 330);
+        if (seconds >= .2) {
+            animate(obj, 110, 330);
+            sfClock_restart(clock);
+        }
         while(sfRenderWindow_pollEvent(window, &event))
             event_handeling(event, window, obj);
     }

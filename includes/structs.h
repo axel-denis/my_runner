@@ -12,9 +12,19 @@ typedef struct gameobj {
     int indice;
     sfVector2f pos;
     sfSprite *sprite;
-    sfTexture *texture;
     sfIntRect rect;
+    struct gameobj *next;
 } gameobj;
 
+typedef struct parallax {
+    int layer;
+    sfVector2f pos;
+    sfSprite *sprite;
+    struct parallax *next;
+} parallax;
+
 gameobj *new_duck(const char *path_sprite, sfVector2f pos);
-void move_rect(sfIntRect *rect, int offset, int max);
+void animate(gameobj *obj, int offset, int max);
+
+parallax *new_parallax(sfRenderWindow *window);
+void display_parallax(parallax *layers, sfRenderWindow *window);
