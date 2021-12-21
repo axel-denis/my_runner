@@ -56,11 +56,24 @@ parallax *new_parallax(sfRenderWindow *window)
 
 void display_parallax(parallax *layers, sfRenderWindow *window)
 {
+    sfVector2f go_right;
+    sfVector2f go_left;
+    sfVector2f reset;
+
+    go_right.x = WIDTH;
+    go_left.x = -WIDTH;
+    reset.x = 0;
+    reset.y = 0;
     while (layers != NULL) {
-        printf("layer : %d\n", layers->layer);
         sfRenderWindow_drawSprite(window, layers->sprite, NULL);
-        layers->pos.x -= layers->layer;
+        sfSprite_move(layers->sprite, go_right);
+        sfRenderWindow_drawSprite(window, layers->sprite, NULL);
+        sfSprite_move(layers->sprite, go_left);
+        layers->pos.x -= layers->layer / 3.0;
         sfSprite_setPosition(layers->sprite, layers->pos);
+        printf("position : %f %f\n", sfSprite_getPosition(layers->sprite).x, sfSprite_getPosition(layers->sprite).y);
+        if (sfSprite_getPosition(layers->sprite).x <= -WIDTH)
+            layers->pos.x = 0;
         layers = layers->next;
     }
 }
