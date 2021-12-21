@@ -26,5 +26,6 @@ typedef struct parallax {
 gameobj *new_duck(const char *path_sprite, sfVector2f pos);
 void animate(gameobj *obj, int offset, int max);
 
-parallax *new_parallax(sfRenderWindow *window);
+parallax *new_mountain(sfRenderWindow *window);
+parallax *new_industrial(sfRenderWindow *window);
 void display_parallax(parallax *layers, sfRenderWindow *window);

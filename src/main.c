@@ -59,8 +59,9 @@ void main(void)
     sfTime time;
     float seconds;
 
+    //parallax *bg = new_mountain(window);
+    parallax *bg = new_industrial(window);
     gameobj *obj = new_duck("assets/sprite.png", testpos);
-    parallax *bg = new_parallax(window);
     while (sfRenderWindow_isOpen(window)) {
         sfRenderWindow_clear(window, sfBlack);
         sfRenderWindow_drawSprite(window, obj->sprite, NULL);

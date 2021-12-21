@@ -26,7 +26,7 @@ gameobj *new_duck(const char *path_sprite, sfVector2f pos)
     return obj;
 }
 
-parallax *new_parallax(sfRenderWindow *window)
+parallax *new_mountain(sfRenderWindow *window)
 {
     parallax *first =  malloc(sizeof(parallax));
     parallax *actual = first;
@@ -54,6 +54,32 @@ parallax *new_parallax(sfRenderWindow *window)
     return first;
 }
 
+parallax *new_industrial(sfRenderWindow *window)
+{
+    parallax *first =  malloc(sizeof(parallax));
+    parallax *actual = first;
+    sfVector2f pos;
+    sfVector2f scale;
+    char *paths[] = {"assets/Layers/1.png", "assets/Layers/2.png",
+    "assets/Layers/3.png", "assets/Layers/4.png", "assets/Layers/5.png", };
+
+    scale.x = WIDTH / 576 + 1;
+    scale.y = HEIGHT / 324 + 1;
+    for (int i = 0; i < 5; i++) {
+        actual->layer = i;
+        actual->pos = pos;
+        actual->sprite = sfSprite_create();
+        sfSprite_setTexture(actual->sprite, sfTexture_createFromFile(paths[i], NULL), sfTrue);
+        sfSprite_setScale(actual->sprite, scale);
+        if (i != 4) {
+            actual->next = malloc(sizeof(parallax));
+            actual = actual->next;
+        } else
+            actual->next = NULL;
+    }
+    return first;
+}
+
 void display_parallax(parallax *layers, sfRenderWindow *window)
 {
     sfVector2f go_right;
@@ -71,7 +97,6 @@ void display_parallax(parallax *layers, sfRenderWindow *window)
         sfSprite_move(layers->sprite, go_left);
         layers->pos.x -= layers->layer / 3.0;
         sfSprite_setPosition(layers->sprite, layers->pos);
-        printf("position : %f %f\n", sfSprite_getPosition(layers->sprite).x, sfSprite_getPosition(layers->sprite).y);
         if (sfSprite_getPosition(layers->sprite).x <= -WIDTH)
             layers->pos.x = 0;
         layers = layers->next;
@@ -80,7 +105,6 @@ void display_parallax(parallax *layers, sfRenderWindow *window)
 
 void animate(gameobj *obj, int offset, int max)
 {
-    printf("%d et %d\n", obj->rect.left);
     if (obj->rect.left + offset >= max)
         obj->rect.left = 0;
     else
