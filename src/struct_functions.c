@@ -8,6 +8,7 @@
 #include "../includes/csfml.h"
 #include "../includes/structs.h"
 #include "../includes/consts.h"
+#include "../includes/lib.h"
 
 gameobj *new_duck(const char *path_sprite, sfVector2f pos)
 {
@@ -110,4 +111,49 @@ void animate(gameobj *obj, int offset, int max)
     else
         obj->rect.left += offset;
     sfSprite_setTextureRect(obj->sprite, obj->rect);
+}
+
+
+sfSprite *block_sprite(int type, sfTexture *blocks_texture)
+{
+    sfSprite *sprite = sfSprite_create();
+    sfIntRect rectangle = {32 * 4, 0, 32, 32};
+
+    if (type == 0) {
+        sfSprite_setTexture(sprite, blocks_texture, sfTrue);
+        sfSprite_setTextureRect(sprite, rectangle);
+    }
+    return sprite;
+}
+
+map_col *map_col_reader(char *buffer, int x, int map_len, sfTexture *texture)
+{
+    map_col *actual = malloc(sizeof(map_col));
+    int tmp_final_y = 0;
+
+    actual->col = malloc(sizeof(block) * 20);
+    actual->next = NULL;
+    for (int i = 0; i < 20; i++) {
+        actual->col[i].pos.x = x; // peut être useless
+        actual->col[i].pos.y = i * 32; // peut être useless
+        tmp_final_y = my_get_nbr(&buffer[i * (map_len * CHUNK) + 1]);
+        actual->col[i].final_y = tmp_final_y;
+        actual->col[i].type = (int) (buffer[i * (map_len * CHUNK)] - '0');
+        actual->col[i].sprite = block_sprite(actual->col[i].type, texture);
+        sfSprite_setPosition(actual->col[i].sprite, actual->col[i].pos);
+    }
+    return actual;
+}
+
+map_col *map_init(char *buffer, int map_len, sfTexture *texture)
+{
+    map_col *temp_node = NULL;
+    map_col *new_temp_node = NULL;
+
+    for (int i = 0; i < 50; i++) {
+        new_temp_node = map_col_reader(buffer, i * 32, map_len, texture);
+        new_temp_node->next = temp_node;
+        temp_node = new_temp_node;
+    }
+    return temp_node;
 }
