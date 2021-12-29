@@ -130,9 +130,9 @@ map_col *map_col_reader(char *buffer, int x, int map_len, sfTexture *texture)
 {
     map_col *actual = malloc(sizeof(map_col));
     int tmp_final_y = 0;
-    actual->col = malloc(sizeof(block) * 20); // hauteur arbitraire de 20
+    actual->col = malloc(sizeof(block) * MAP_HEIGHT); // hauteur arbitraire de 20
     actual->next = NULL;
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < MAP_HEIGHT; i++) {
         actual->col[i].pos.x = x * 32;
         actual->col[i].pos.y = i * 32;
         tmp_final_y = my_get_nbr(&buffer[(x * CHUNK) + ((map_len * CHUNK + 2) * i) + 1]); // mauvais ici, on lit pas le bon endroit à chaque fois
@@ -149,7 +149,7 @@ map_col *map_init(char *buffer, int map_len, sfTexture *texture)
     map_col *temp_node = NULL;
     map_col *new_temp_node = NULL;
 
-    for (int index = 0; index < 50; index++) {
+    for (int index = 0; index < 60; index++) {
         new_temp_node = map_col_reader(buffer, index, map_len, texture);
         new_temp_node->next = temp_node;
         temp_node = new_temp_node;

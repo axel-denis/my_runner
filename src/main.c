@@ -54,13 +54,13 @@ sfRenderWindow *create_window(void)
 char *read_map_file(char *map_file)
 {
     int fd = open(map_file, O_RDONLY);
-    char *buffer = malloc(sizeof(char) * 10000); // euh là pour le coup faudrait trouver mieux x)
+    char *buffer = malloc(sizeof(char) * 1000000); // euh là pour le coup faudrait trouver mieux x)
 
     if (fd == -1) {
         my_putstr("can't read !\n");
         return NULL;
     }
-    read(fd, buffer, 10000);
+    read(fd, buffer, 1000000);
     close(fd);
     return buffer;
 }
@@ -93,7 +93,7 @@ void main(void)
         map_col *test = map;
         sfRenderWindow_clear(window, sfBlack);
         while (test != NULL) {
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < MAP_HEIGHT; i++)
                 sfRenderWindow_drawSprite(window, test->col[i].sprite, NULL);
             //printf("|\n");
             //printf("\n");
