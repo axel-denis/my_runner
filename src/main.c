@@ -84,7 +84,7 @@ void main(void)
     char *buffer = read_map_file("map.txt");
     sfTexture *b_texture = sfTexture_createFromFile("./assets/Tiles.psd", NULL);
     map_col *map = map_init(buffer, map_len(buffer), b_texture);
-    parallax *bg = new_mountain(window);
+    //parallax *bg = new_mountain(window);
     //parallax *bg = new_industrial(window);
     gameobj *obj = new_duck("assets/sprite.png", testpos);
 

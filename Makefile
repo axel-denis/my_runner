@@ -15,6 +15,7 @@ NAME	=	my_runner # VERIFIER QUE C'EST VALIDE
 .CFLAGS	=	Wall -Wextra -Werror
 
 $(NAME):	$(OBJ)
+	make -C lib/
 	gcc -o $(NAME) $(OBJ) -lcsfml-graphics -lcsfml-system -lcsfml-window -lm \
 	-L. ./lib/lib.a
 
