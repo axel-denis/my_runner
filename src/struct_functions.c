@@ -113,16 +113,32 @@ void animate(gameobj *obj, int offset, int max)
     sfSprite_setTextureRect(obj->sprite, obj->rect);
 }
 
+void set_tile_rectangle(sfSprite *sprite, int top, int left)
+{
+    sfIntRect rect = {top, left, 32, 32};
+    sfSprite_setTextureRect(sprite, rect);
+}
 
 sfSprite *block_sprite(int type, sfTexture *blocks_texture)
 {
     sfSprite *sprite = sfSprite_create();
-    sfIntRect rectangle = {32 * 4, 0, 32, 32};
 
-    if (type == 0) {
+    if (type >= 0 && type <= 6)
         sfSprite_setTexture(sprite, blocks_texture, sfTrue);
-        sfSprite_setTextureRect(sprite, rectangle);
-    }
+    if (type == 0)
+        set_tile_rectangle(sprite, BLOCK_SIZE * 3, 0);
+    if (type == 1)
+        set_tile_rectangle(sprite, BLOCK_SIZE * 4, 0);
+    if (type == 2)
+        set_tile_rectangle(sprite, BLOCK_SIZE * 5, 0);
+    if (type == 3)
+        set_tile_rectangle(sprite, BLOCK_SIZE * 3, BLOCK_SIZE);
+    if (type == 4)
+        set_tile_rectangle(sprite, BLOCK_SIZE * 4, BLOCK_SIZE);
+    if (type == 5)
+        set_tile_rectangle(sprite, BLOCK_SIZE * 5, BLOCK_SIZE);
+    if (type == 6)
+        set_tile_rectangle(sprite, BLOCK_SIZE * 4, BLOCK_SIZE);
     return sprite;
 }
 
@@ -130,6 +146,7 @@ map_col *map_col_reader(char *buffer, int x, int map_len, sfTexture *texture)
 {
     map_col *actual = malloc(sizeof(map_col));
     int tmp_final_y = 0;
+
     actual->col = malloc(sizeof(block) * MAP_HEIGHT); // hauteur arbitraire de 20
     actual->next = NULL;
     for (int i = 0; i < MAP_HEIGHT; i++) {
@@ -155,4 +172,39 @@ map_col *map_init(char *buffer, int map_len, sfTexture *texture)
         temp_node = new_temp_node;
     }
     return temp_node;
+}
+
+//note pour plus tard. Il faut créer une nouvelle colonne quand on en supprime
+//une. A voir si on le fait dans cette fonction ou une autre. Il faudra dans
+//tous les cas garder en mémoire la colonne à laquelle on est pour la lire
+//et il faudra aussi pouvoir renvoyer la liste une fois qu'on y aura empillé
+//la nouvelle colonne
+map_col *move_blocks(int direction, int speed, map_col *cols, int iteration)
+{
+    map_col *initial = cols;
+    map_col *temp = NULL;
+    sfVector2f offset = {direction * speed, 0};
+
+    while (cols != NULL) {
+        if (sfSprite_getPosition(cols->col[0].sprite).x <= (-32 * direction)) {
+            temp = cols;
+            cols = cols->next;
+            free_col(temp);
+            iteration++;
+        } else {
+            sfSprite_move(cols->col[0].sprite, offset);
+        }
+        cols = cols->next;
+    }
+    return initial;
+}
+
+void free_col(map_col *col)
+{
+    if (col->next != NULL) {
+        my_putstr("THIS WAS NOT THE LAST COL !\n");
+        free_col(col->next);
+    }
+    free(col->col);
+    free(col);
 }
