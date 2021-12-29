@@ -120,11 +120,9 @@ sfSprite *block_sprite(int type, sfTexture *blocks_texture)
     sfIntRect rectangle = {32 * 4, 0, 32, 32};
 
     if (type == 0) {
-        printf("this block is NOT empty\n");
         sfSprite_setTexture(sprite, blocks_texture, sfTrue);
         sfSprite_setTextureRect(sprite, rectangle);
-    } else
-        printf("GOT WRONG TYPE OF %c\n", type + '0');
+    }
     return sprite;
 }
 
@@ -132,7 +130,6 @@ map_col *map_col_reader(char *buffer, int x, int map_len, sfTexture *texture)
 {
     map_col *actual = malloc(sizeof(map_col));
     int tmp_final_y = 0;
-
     actual->col = malloc(sizeof(block) * 20); // hauteur arbitraire de 20
     actual->next = NULL;
     for (int i = 0; i < 20; i++) {
@@ -140,7 +137,6 @@ map_col *map_col_reader(char *buffer, int x, int map_len, sfTexture *texture)
         actual->col[i].pos.y = i * 32;
         tmp_final_y = my_get_nbr(&buffer[(x * CHUNK) + ((map_len * CHUNK + 2) * i) + 1]); // mauvais ici, on lit pas le bon endroit à chaque fois
         actual->col[i].final_y = tmp_final_y;
-        printf("FINAL Y WILL BE %.3s\n", &buffer[(x * CHUNK) + ((map_len * CHUNK + 2) * i)]);
         actual->col[i].type = (int) (buffer[(x * CHUNK) + ((map_len * CHUNK + 2) * i)] - '0');
         actual->col[i].sprite = block_sprite(actual->col[i].type, texture);
         sfSprite_setPosition(actual->col[i].sprite, actual->col[i].pos);

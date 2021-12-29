@@ -87,16 +87,14 @@ void main(void)
     //parallax *bg = new_mountain(window);
     //parallax *bg = new_industrial(window);
     gameobj *obj = new_duck("assets/sprite.png", testpos);
+    sfVector2f testvect = {0, 0};
 
     while (sfRenderWindow_isOpen(window)) {
         map_col *test = map;
         sfRenderWindow_clear(window, sfBlack);
-        while (test->next != NULL) {
-            for (int i = 0; i < 20; i++) {
-                //printf("%c.", test->col[i].type + '0');
-                //printf("pos is : %f %f\n", sfSprite_getPosition(test->col[i].sprite).x, sfSprite_getPosition(test->col[i].sprite).y);
+        while (test != NULL) {
+            for (int i = 0; i < 20; i++)
                 sfRenderWindow_drawSprite(window, test->col[i].sprite, NULL);
-            }
             //printf("|\n");
             //printf("\n");
             test = test->next;
