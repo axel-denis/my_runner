@@ -106,6 +106,7 @@ void main(void)
             //printf("\n");
             test = test->next;
         }
+        move_blocks(1, 1, map);
         sfRenderWindow_drawSprite(window, obj->sprite, NULL);
         time = sfClock_getElapsedTime(clock);
         seconds = time.microseconds / 1000000.0;

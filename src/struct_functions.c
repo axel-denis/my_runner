@@ -179,24 +179,30 @@ map_col *map_init(char *buffer, int map_len, sfTexture *texture)
 //tous les cas garder en mémoire la colonne à laquelle on est pour la lire
 //et il faudra aussi pouvoir renvoyer la liste une fois qu'on y aura empillé
 //la nouvelle colonne
-void move_blocks(int direction, int speed, map_col **cols, map_info *map)
+void move_blocks(int direction, int speed, map_info *map)
 {
-    map_col *actual = *cols;
+    map_col *actual = map->data;
     map_col *temp = NULL;
-    sfVector2f offset = {direction * speed, 0};
+    sfVector2f offset;// = {speed * direction, 0};
 
     while (actual != NULL) {
         if (sfSprite_getPosition(actual->col[0].sprite).x <= (-32 * direction)) {
             temp = actual;
             actual = actual->next; // si tout se passe bien, c'est NULL et le while va break
-            free_col(temp);
+            free_col(temp); // on free mais on dit pas que l'elem d'avant pointe sur NULL donc segfault.
             map->iteration += 1;
+            printf("passed here\n");
             temp = map_col_reader(map->buffer, map->iteration,
             map->len, map->texture);
-            temp->next = *cols;
-            cols = &temp;
+            printf("passed here2\n");
+            temp->next = map->data;
+            map->data = temp;
+            printf("passed here3\n");
         } else {
-            sfSprite_move(actual->col[0].sprite, offset);
+            offset = sfSprite_getPosition(actual->col[0].sprite);
+            offset.x = offset.x - speed * direction;
+            sfSprite_setPosition(actual->col[0].sprite, offset);
+            //sfSprite_move(actual->col[0].sprite, offset);
         }
         actual = actual->next;
     }
