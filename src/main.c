@@ -73,24 +73,31 @@ int map_len(char *buffer)
     return i / CHUNK;
 }
 
+map_info *map_creator(void)
+{
+    map_info *map = malloc(sizeof(map_info));
+
+    map->buffer = read_map_file("map.txt");
+    map->texture = sfTexture_createFromFile("./assets/Tiles.psd", NULL);
+    map->bg = new_mountain();
+    map->len = map_len(map->buffer);
+    map->data = map_init(map->buffer, map->len, map->texture);
+    map->iteration = 60; //60 étant la longueur de map_init
+}
+
 void main(void)
 {
+    map_info *map = map_creator();
     sfEvent event;
     sfRenderWindow *window = create_window();
     sfVector2f testpos;
     sfClock *clock = sfClock_create();
     sfTime time;
     float seconds;
-    char *buffer = read_map_file("map.txt");
-    sfTexture *b_texture = sfTexture_createFromFile("./assets/Tiles.psd", NULL);
-    map_col *map = map_init(buffer, map_len(buffer), b_texture);
-    //parallax *bg = new_mountain(window);
-    //parallax *bg = new_industrial(window);
     gameobj *obj = new_duck("assets/sprite.png", testpos);
-    sfVector2f testvect = {0, 0};
 
     while (sfRenderWindow_isOpen(window)) {
-        map_col *test = map;
+        map_col *test = map->data;
         sfRenderWindow_clear(window, sfBlack);
         while (test != NULL) {
             for (int i = 0; i < MAP_HEIGHT; i++)
@@ -111,5 +118,4 @@ void main(void)
         while(sfRenderWindow_pollEvent(window, &event))
             event_handeling(event, window, obj);
     }
-    free(buffer);
 }

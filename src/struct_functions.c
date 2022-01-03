@@ -27,7 +27,7 @@ gameobj *new_duck(const char *path_sprite, sfVector2f pos)
     return obj;
 }
 
-parallax *new_mountain(sfRenderWindow *window)
+parallax *new_mountain(void)
 {
     parallax *first =  malloc(sizeof(parallax));
     parallax *actual = first;
@@ -55,7 +55,7 @@ parallax *new_mountain(sfRenderWindow *window)
     return first;
 }
 
-parallax *new_industrial(sfRenderWindow *window)
+parallax *new_industrial(void)
 {
     parallax *first =  malloc(sizeof(parallax));
     parallax *actual = first;
@@ -179,24 +179,28 @@ map_col *map_init(char *buffer, int map_len, sfTexture *texture)
 //tous les cas garder en mémoire la colonne à laquelle on est pour la lire
 //et il faudra aussi pouvoir renvoyer la liste une fois qu'on y aura empillé
 //la nouvelle colonne
-map_col *move_blocks(int direction, int speed, map_col *cols, int iteration)
+void move_blocks(int direction, int speed, map_col **cols, map_info *map)
 {
-    map_col *initial = cols;
+    map_col *actual = *cols;
     map_col *temp = NULL;
     sfVector2f offset = {direction * speed, 0};
 
-    while (cols != NULL) {
-        if (sfSprite_getPosition(cols->col[0].sprite).x <= (-32 * direction)) {
-            temp = cols;
-            cols = cols->next;
+    while (actual != NULL) {
+        if (sfSprite_getPosition(actual->col[0].sprite).x <= (-32 * direction)) {
+            temp = actual;
+            actual = actual->next; // si tout se passe bien, c'est NULL et le while va break
             free_col(temp);
-            iteration++;
+            map->iteration += 1;
+            temp = map_col_reader(map->buffer, map->iteration,
+            map->len, map->texture);
+            temp->next = *cols;
+            cols = &temp;
         } else {
-            sfSprite_move(cols->col[0].sprite, offset);
+            sfSprite_move(actual->col[0].sprite, offset);
         }
-        cols = cols->next;
+        actual = actual->next;
     }
-    return initial;
+    return;
 }
 
 void free_col(map_col *col)

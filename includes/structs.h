@@ -25,6 +25,7 @@ typedef struct map_col {
     struct map_col *next;
 } map_col;
 
+
 typedef struct gameobj {
     int indice;
     sfVector2f pos;
@@ -40,11 +41,20 @@ typedef struct parallax {
     struct parallax *next;
 } parallax;
 
+typedef struct map_info {
+    char *buffer;
+    map_col *data;
+    parallax *bg;
+    int iteration;
+    int len;
+    sfTexture *texture;
+} map_info;
+
 gameobj *new_duck(const char *path_sprite, sfVector2f pos);
 void animate(gameobj *obj, int offset, int max);
 
-parallax *new_mountain(sfRenderWindow *window);
-parallax *new_industrial(sfRenderWindow *window);
+parallax *new_mountain();
+parallax *new_industrial();
 void display_parallax(parallax *layers, sfRenderWindow *window);
 
 map_col *map_init(char *buffer, int map_len, sfTexture *texture);
