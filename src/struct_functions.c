@@ -142,17 +142,20 @@ sfSprite *block_sprite(int type, sfTexture *blocks_texture)
     return sprite;
 }
 
-map_col *map_col_reader(char *buffer, int x, int map_len, sfTexture *texture)
+map_col *map_col_reader(char *buffer, int x, int map_len, sfTexture *texture, float last_pos)
 {
     map_col *actual = malloc(sizeof(map_col));
     int tmp_final_y = 0;
 
-    actual->col = malloc(sizeof(block) * MAP_HEIGHT); // hauteur arbitraire de 20
+    actual->col = malloc(sizeof(block) * MAP_HEIGHT);
     actual->next = NULL;
     for (int i = 0; i < MAP_HEIGHT; i++) {
-        actual->col[i].pos.x = x * 32;
+        if (x >= 60)
+            actual->col[i].pos.x = 32 * 60 + last_pos;
+        else
+            actual->col[i].pos.x = x * 32;
         actual->col[i].pos.y = i * 32;
-        tmp_final_y = my_get_nbr(&buffer[(x * CHUNK) + ((map_len * CHUNK + 2) * i) + 1]); // mauvais ici, on lit pas le bon endroit à chaque fois
+        tmp_final_y = 0; //my_get_nbr(&buffer[(x * CHUNK) + ((map_len * CHUNK + 2) * i) + 1]);
         actual->col[i].final_y = tmp_final_y;
         actual->col[i].type = (int) (buffer[(x * CHUNK) + ((map_len * CHUNK + 2) * i)] - '0');
         actual->col[i].sprite = block_sprite(actual->col[i].type, texture);
@@ -167,7 +170,7 @@ map_col *map_init(char *buffer, int map_len, sfTexture *texture)
     map_col *new_temp_node = NULL;
 
     for (int index = 0; index < 60; index++) {
-        new_temp_node = map_col_reader(buffer, index, map_len, texture);
+        new_temp_node = map_col_reader(buffer, index, map_len, texture, 0.0);
         new_temp_node->next = temp_node;
         temp_node = new_temp_node;
     }
@@ -181,29 +184,33 @@ map_col *map_init(char *buffer, int map_len, sfTexture *texture)
 //la nouvelle colonne
 void move_blocks(int direction, int speed, map_info *map)
 {
+    map_col *last = map->data;
     map_col *actual = map->data;
     map_col *temp = NULL;
     sfVector2f offset;// = {speed * direction, 0};
+    sfVector2f first_pos;
 
     while (actual != NULL) {
-        if (sfSprite_getPosition(actual->col[0].sprite).x <= (-32 * direction)) {
+        first_pos = sfSprite_getPosition(actual->col[0].sprite);
+        if (first_pos.x <= (-32 * direction)) {
             temp = actual;
-            actual = actual->next; // si tout se passe bien, c'est NULL et le while va break
-            free_col(temp); // on free mais on dit pas que l'elem d'avant pointe sur NULL donc segfault.
+            last->next = NULL;
+            free_col(temp);
             map->iteration += 1;
-            printf("passed here\n");
+            //printf("created a new col at index %d\n", map->iteration);
             temp = map_col_reader(map->buffer, map->iteration,
-            map->len, map->texture);
-            printf("passed here2\n");
+                                  map->len, map->texture, first_pos.x);
             temp->next = map->data;
             map->data = temp;
-            printf("passed here3\n");
+            actual = temp;
         } else {
-            offset = sfSprite_getPosition(actual->col[0].sprite);
-            offset.x = offset.x - speed * direction;
-            sfSprite_setPosition(actual->col[0].sprite, offset);
-            //sfSprite_move(actual->col[0].sprite, offset);
         }
+        for (int i = 0; i < MAP_HEIGHT; i++) {
+            offset = sfSprite_getPosition(actual->col[i].sprite);
+            offset.x = offset.x - speed * direction;
+            sfSprite_setPosition(actual->col[i].sprite, offset);
+        }
+        last = actual;
         actual = actual->next;
     }
     return;

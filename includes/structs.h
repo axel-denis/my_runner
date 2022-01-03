@@ -58,3 +58,4 @@ parallax *new_industrial();
 void display_parallax(parallax *layers, sfRenderWindow *window);
 
 map_col *map_init(char *buffer, int map_len, sfTexture *texture);
+void free_col(map_col *col);

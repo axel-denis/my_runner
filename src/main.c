@@ -10,15 +10,17 @@
 #include "../includes/structs.h"
 #include "../includes/lib.h"
 
-void event_handeling(sfEvent event, sfRenderWindow *window, gameobj *obj)
+void event_handeling(sfEvent event, sfRenderWindow *window, gameobj *obj,
+                    map_info *map)
 {
     sfVector2f vect;
 
     if (event.type == sfEvtClosed)
         sfRenderWindow_close(window);
-    if (event.type == sfEvtKeyPressed && event.key.code == sfKeyEscape)
+    if (event.type == sfEvtKeyPressed && event.key.code == sfKeyEscape) {
+        free_col(map->data);
         sfRenderWindow_close(window);
-
+    }
     if (event.type == sfEvtKeyPressed && event.key.code == sfKeyRight) {
         vect.x = 10;
         sfSprite_move(obj->sprite, vect);
@@ -102,8 +104,6 @@ void main(void)
         while (test != NULL) {
             for (int i = 0; i < MAP_HEIGHT; i++)
                 sfRenderWindow_drawSprite(window, test->col[i].sprite, NULL);
-            //printf("|\n");
-            //printf("\n");
             test = test->next;
         }
         move_blocks(1, 1, map);
@@ -117,6 +117,6 @@ void main(void)
             sfClock_restart(clock);
         }
         while(sfRenderWindow_pollEvent(window, &event))
-            event_handeling(event, window, obj);
+            event_handeling(event, window, obj, map);
     }
 }

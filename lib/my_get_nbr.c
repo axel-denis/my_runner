@@ -31,11 +31,12 @@ int boucle(int power, int i, int resultat)
 int my_get_nbr(char *str)
 {
     int resultat = 0;
-    int power = my_strlen(str) - 1;
+    int power = 0;
     int j = 0;
     int parite = 1;
 
-    for (;str[j] == '-' || str[j] == '+'; j++) {
+    for (power; str[power] >= '0' && str[power] >= '9'; power++);
+    for (; str[j] == '-' || str[j] == '+'; j++) {
         if (str[j] == '-')
             parite *= -1;
     }

@@ -12,11 +12,11 @@ OBJ	=	$(SRC:.c=.o)
 
 NAME	=	my_runner # VERIFIER QUE C'EST VALIDE
 
-.CFLAGS	=	Wall -Wextra -Werror
+CFLAGS	+=	-Wall -Wextra
 
 $(NAME):	$(OBJ)
 	make -C lib/
-	gcc -o $(NAME) $(OBJ) -lcsfml-graphics -lcsfml-system -lcsfml-window -lm \
+	gcc -o $(NAME) $(OBJ) $(CFLAGS) -lcsfml-graphics -lcsfml-system -lcsfml-window -lm \
 	-L. ./lib/lib.a
 
 all:	$(NAME)
@@ -31,3 +31,6 @@ fclean: clean
 re: fclean all
 
 .PHONY	=	all clean fclean re
+
+#sudo dnf install libasan
+#CFLAGS="-fsanitize=address -g3" make re
