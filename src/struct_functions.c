@@ -150,8 +150,8 @@ map_col *map_col_reader(char *buffer, int x, int map_len, sfTexture *texture, fl
     actual->col = malloc(sizeof(block) * MAP_HEIGHT);
     actual->next = NULL;
     for (int i = 0; i < MAP_HEIGHT; i++) {
-        if (x >= 60)
-            actual->col[i].pos.x = 32 * 60 + last_pos;
+        if (x >= INITIAL_MAP_WIDTH)
+            actual->col[i].pos.x = 32 * INITIAL_MAP_WIDTH + last_pos - 1;
         else
             actual->col[i].pos.x = x * 32;
         actual->col[i].pos.y = i * 32;
@@ -169,7 +169,7 @@ map_col *map_init(char *buffer, int map_len, sfTexture *texture)
     map_col *temp_node = NULL;
     map_col *new_temp_node = NULL;
 
-    for (int index = 0; index < 60; index++) {
+    for (int index = 0; index < INITIAL_MAP_WIDTH; index++) {
         new_temp_node = map_col_reader(buffer, index, map_len, texture, 0.0);
         new_temp_node->next = temp_node;
         temp_node = new_temp_node;
@@ -197,7 +197,6 @@ void move_blocks(int direction, int speed, map_info *map)
             last->next = NULL;
             free_col(temp);
             map->iteration += 1;
-            //printf("created a new col at index %d\n", map->iteration);
             temp = map_col_reader(map->buffer, map->iteration,
                                   map->len, map->texture, first_pos.x);
             temp->next = map->data;
@@ -218,10 +217,10 @@ void move_blocks(int direction, int speed, map_info *map)
 
 void free_col(map_col *col)
 {
-    if (col->next != NULL) {
-        my_putstr("THIS WAS NOT THE LAST COL !\n");
+    if (col->next != NULL)
         free_col(col->next);
-    }
+    for (int i = 0; i < MAP_HEIGHT; i++)
+        sfSprite_destroy(col->col[i].sprite);
     free(col->col);
     free(col);
 }

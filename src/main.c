@@ -10,17 +10,14 @@
 #include "../includes/structs.h"
 #include "../includes/lib.h"
 
-void event_handeling(sfEvent event, sfRenderWindow *window, gameobj *obj,
-                    map_info *map)
+void event_handeling(sfEvent event, sfRenderWindow *window, gameobj *obj)
 {
     sfVector2f vect;
 
     if (event.type == sfEvtClosed)
         sfRenderWindow_close(window);
-    if (event.type == sfEvtKeyPressed && event.key.code == sfKeyEscape) {
-        free_col(map->data);
+    if (event.type == sfEvtKeyPressed && event.key.code == sfKeyEscape)
         sfRenderWindow_close(window);
-    }
     if (event.type == sfEvtKeyPressed && event.key.code == sfKeyRight) {
         vect.x = 10;
         sfSprite_move(obj->sprite, vect);
@@ -106,7 +103,7 @@ void main(void)
                 sfRenderWindow_drawSprite(window, test->col[i].sprite, NULL);
             test = test->next;
         }
-        move_blocks(1, 1, map);
+        move_blocks(1, 5, map);
         sfRenderWindow_drawSprite(window, obj->sprite, NULL);
         time = sfClock_getElapsedTime(clock);
         seconds = time.microseconds / 1000000.0;
@@ -117,6 +114,24 @@ void main(void)
             sfClock_restart(clock);
         }
         while(sfRenderWindow_pollEvent(window, &event))
-            event_handeling(event, window, obj, map);
+            event_handeling(event, window, obj);
     }
+    free_map(map);
+}
+
+void free_parallax(parallax *bg)
+{
+    if (bg->next != NULL)
+        free_parallax(bg->next);
+    sfSprite_destroy(bg->sprite);
+    free(bg);
+}
+
+void free_map(map_info *map)
+{
+    free(map->buffer);
+    free_col(map->data);
+    free_parallax(map->bg);
+    sfTexture_destroy(map->texture);
+    free(map);
 }

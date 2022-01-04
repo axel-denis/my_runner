@@ -5,15 +5,15 @@
 ** structs.h
 */
 
-#include "csfml.h"
+#ifndef STRUCTS_H
+    #define STRUCTS_H
+    #include "csfml.h"
 
 typedef struct block {
     sfVector2f pos;
     sfSprite *sprite;
     int type;
     int final_y;
-    //int base_x;
-    //int base_y;
 } block;
 
 
@@ -59,3 +59,5 @@ void display_parallax(parallax *layers, sfRenderWindow *window);
 
 map_col *map_init(char *buffer, int map_len, sfTexture *texture);
 void free_col(map_col *col);
+
+#endif
