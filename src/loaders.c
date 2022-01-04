@@ -35,7 +35,7 @@ sfRenderWindow *create_window(void)
     video_mode.bitsPerPixel = 32;
     window = sfRenderWindow_create(video_mode, "RABBIT",
     sfDefaultStyle | sfClose | sfResize, NULL);
-    sfRenderWindow_setFramerateLimit(window, 15);
+    sfRenderWindow_setFramerateLimit(window, 75);
     return window;
 }
 

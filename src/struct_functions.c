@@ -15,7 +15,7 @@ gameobj *new_entity(const char *path_sprite, sfVector2f pos, int type)
     gameobj *obj = malloc(sizeof(gameobj));
 
     obj->indice = type;
-    obj->pos = pos;
+    obj->velocity = pos;
     obj->rect.top = 0;
     obj->rect.left = 0;
     obj->rect.width = 81;

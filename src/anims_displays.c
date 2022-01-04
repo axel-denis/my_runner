@@ -10,6 +10,7 @@
 #include "../includes/structs.h"
 #include "../includes/lib.h"
 #include "../includes/frees.h"
+#include "../includes/utils.h"
 
 void display_parallax(parallax *layers, sfRenderWindow *window)
 {
@@ -46,13 +47,27 @@ void run_rabbit(gameobj *obj, sfClock *clock)
     }
 }
 
-void animate_rabbit(gameobj *obj, map_info *map, sfClock *clock)
+void velocity_up(gameobj *obj, map_info *map)
+{
+    float to_y = sfSprite_getPosition(obj->sprite).y + obj->velocity.y;
+    float y_pos = sfSprite_getPosition(obj->sprite).y;
+    sfVector2f move_vect = {0, -1};
+
+    while (y_pos > to_y) {
+        y_pos--;
+        sfSprite_move(obj->sprite, move_vect);
+    }
+    if (obj->velocity.y > -1)
+        obj->velocity.y = 0;
+    obj->velocity.y /= 1.2;
+}
+
+void gravity(gameobj *obj, map_info *map)
 {
     float to_y = sfSprite_getPosition(obj->sprite).y + obj->velocity.y;
     float y_pos = sfSprite_getPosition(obj->sprite).y;
     sfVector2f move_vect = {0, 1};
 
-    run_rabbit(obj, clock);
     if (obj->velocity.y == 0.0) {
         obj->velocity.y = 1.0;
         return;
@@ -67,6 +82,16 @@ void animate_rabbit(gameobj *obj, map_info *map, sfClock *clock)
         obj->velocity.y *= 1.2;
     else
         obj->velocity.y /= 1.2;
+}
+
+void animate_rabbit(gameobj *obj, map_info *map, sfClock *clock)
+{
+    printf("velocité : %.2f\n", obj->velocity.y);
+    run_rabbit(obj, clock);
+    if (obj->velocity.y >= 0)
+        gravity(obj, map);
+    else
+        velocity_up(obj, map);
 }
 
 void move_blocks(int direction, int speed, map_info *map)

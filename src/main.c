@@ -24,6 +24,10 @@ void event_handeling(sfEvent event, sfRenderWindow *window, gameobj *obj)
         vect.x = 10;
         sfSprite_move(obj->sprite, vect);
     }
+    if (event.type == sfEvtKeyPressed && event.key.code == sfKeySpace) {
+        printf("Space\n");
+        obj->velocity.y = -20;
+    }
     if (event.type == sfEvtKeyPressed && event.key.code == sfKeyLeft) {
         vect.x = -10;
         sfSprite_move(obj->sprite, vect);
@@ -80,12 +84,10 @@ void display_move_map(map_info *map, sfRenderWindow *window)
 
 int main(void)
 {
-    map_info *map = map_creator();
     sfEvent event;
+    map_info *map = map_creator();
     sfRenderWindow *window = create_window();
     sfClock *clock = sfClock_create();
-    sfTime time;
-    float seconds;
     sfVector2f testpos = {500, 0};
     gameobj *rabbit = new_entity("assets/rabbit.png", testpos, 0);
     parallax *bg = new_industrial();
@@ -95,11 +97,7 @@ int main(void)
         display_parallax(bg, window);
         display_move_map(map, window);
         bottom_collision(rabbit, map);
-        time = sfClock_getElapsedTime(clock);
-        seconds = time.microseconds / 1000000.0;
-        //if (seconds >= .01) {
-            animate_rabbit(rabbit, map, clock);
-        //}
+        animate_rabbit(rabbit, map, clock);
         sfRenderWindow_drawSprite(window, rabbit->sprite, NULL);
         sfRenderWindow_display(window);
         while(sfRenderWindow_pollEvent(window, &event))
