@@ -15,4 +15,6 @@
     #define BLOCK_SIZE 32
     #define CHUNK 4 //la taille que prends un block dans le buffer
     #define INITIAL_MAP_WIDTH 61
+    #define RABBIT_WIDTH 81
+    #define RABBIT_X 500
 #endif

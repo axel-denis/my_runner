@@ -16,15 +16,10 @@ typedef struct block {
     int final_y;
 } block;
 
-
-//NOTE on va faire une pile parce que grace à ça les blocs à bouger (qui
-// demandent donc d'accéder à la structure) sont au début
-// la variable col est un array de struct block
 typedef struct map_col {
     block *col;
     struct map_col *next;
 } map_col;
-
 
 typedef struct gameobj {
     int indice;
@@ -53,7 +48,7 @@ typedef struct map_info {
 map_col *map_col_reader(char *buffer, int x, int map_len, sfTexture *texture,
                         float last_pos);
 
-gameobj *new_duck(const char *path_sprite, sfVector2f pos);
+gameobj *new_entity(const char *path_sprite, sfVector2f pos, int type);
 void animate(gameobj *obj, int offset, int max);
 void move_blocks(int direction, int speed, map_info *map);
 

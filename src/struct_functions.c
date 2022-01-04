@@ -10,20 +10,20 @@
 #include "../includes/consts.h"
 #include "../includes/lib.h"
 
-gameobj *new_duck(const char *path_sprite, sfVector2f pos)
+gameobj *new_entity(const char *path_sprite, sfVector2f pos, int type)
 {
     gameobj *obj = malloc(sizeof(gameobj));
 
-    obj->indice = 0;
+    obj->indice = type;
     obj->pos = pos;
     obj->rect.top = 0;
     obj->rect.left = 0;
-    obj->rect.width = 110;
-    obj->rect.height = 110;
-    //obj->texture = sfTexture_createFromFile(path_sprite, NULL);
+    obj->rect.width = 81;
+    obj->rect.height = 60;
     obj->sprite = sfSprite_create();
     sfSprite_setTexture(obj->sprite, sfTexture_createFromFile(path_sprite, NULL), sfTrue);
     sfSprite_setTextureRect(obj->sprite, obj->rect);
+    sfSprite_setPosition(obj->sprite, pos);
     return obj;
 }
 
