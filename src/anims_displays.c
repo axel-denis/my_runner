@@ -31,13 +31,42 @@ void display_parallax(parallax *layers, sfRenderWindow *window)
     }
 }
 
-void animate(gameobj *obj, int offset, int max)
+void run_rabbit(gameobj *obj, sfClock *clock)
 {
-    if (obj->rect.left + offset >= max)
-        obj->rect.left = 0;
+    sfTime time = sfClock_getElapsedTime(clock);
+    float seconds = time.microseconds / 1000000.0;
+
+    if (seconds >= 0.1) {
+        if (obj->rect.left + RABBIT_WIDTH >= RABBIT_WIDTH * 4)
+            obj->rect.left = 0;
+        else
+            obj->rect.left += RABBIT_WIDTH;
+        sfSprite_setTextureRect(obj->sprite, obj->rect);
+        sfClock_restart(clock);
+    }
+}
+
+void animate_rabbit(gameobj *obj, map_info *map, sfClock *clock)
+{
+    float to_y = sfSprite_getPosition(obj->sprite).y + obj->velocity.y;
+    float y_pos = sfSprite_getPosition(obj->sprite).y;
+    sfVector2f move_vect = {0, 1};
+
+    run_rabbit(obj, clock);
+    if (obj->velocity.y == 0.0) {
+        obj->velocity.y = 1.0;
+        return;
+    }
+    while (y_pos < to_y && !bottom_collision(obj, map->data)) {
+        y_pos++;
+        sfSprite_move(obj->sprite, move_vect);
+    }
+    if (bottom_collision(obj, map->data))
+        obj->velocity.y = 0;
+    else if (obj->velocity.y > 0 && obj->velocity.y < 20)
+        obj->velocity.y *= 1.2;
     else
-        obj->rect.left += offset;
-    sfSprite_setTextureRect(obj->sprite, obj->rect);
+        obj->velocity.y /= 1.2;
 }
 
 void move_blocks(int direction, int speed, map_info *map)

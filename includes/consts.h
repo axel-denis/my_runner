@@ -17,4 +17,5 @@
     #define INITIAL_MAP_WIDTH 61
     #define RABBIT_WIDTH 81
     #define RABBIT_X 500
+    #define RABBIT_COL 42
 #endif

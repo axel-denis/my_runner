@@ -23,7 +23,7 @@ typedef struct map_col {
 
 typedef struct gameobj {
     int indice;
-    sfVector2f pos;
+    sfVector2f velocity;
     sfSprite *sprite;
     sfIntRect rect;
     struct gameobj *next;
@@ -49,7 +49,7 @@ map_col *map_col_reader(char *buffer, int x, int map_len, sfTexture *texture,
                         float last_pos);
 
 gameobj *new_entity(const char *path_sprite, sfVector2f pos, int type);
-void animate(gameobj *obj, int offset, int max);
+void animate_rabbit(gameobj *obj, map_info *map, sfClock *clock);
 void move_blocks(int direction, int speed, map_info *map);
 
 parallax *new_mountain();
@@ -58,5 +58,7 @@ void display_parallax(parallax *layers, sfRenderWindow *window);
 
 map_col *map_init(char *buffer, int map_len, sfTexture *texture);
 void free_col(map_col *col);
+
+int bottom_collision(gameobj *entity, map_col *map);
 
 #endif

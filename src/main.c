@@ -38,35 +38,39 @@ void event_handeling(sfEvent event, sfRenderWindow *window, gameobj *obj)
     }
 }
 
-int bottom_collision(gameobj *entity, map_col *map, int x)
+//Vérifie les collisions pour le dessous du lapin à ses pixels 10 et 70
+//(à 0 et 20 pixels du début et de la fin de la largeur du sprite, pour
+//laisser une tolérance)
+//Vérifie pour les colonnes 42 et 43, où se trouve toujours le lapin
+int bottom_collision(gameobj *entity, map_col *map)
 {
     float sprite_pos_y = sfSprite_getPosition(entity->sprite).y;
     float block_pos_y = 0.0;
-    int col_to_check = 43; //(RABBIT_X + 40) / 32 + x - 61;
     int line_to_check = (sprite_pos_y + 61) / 32;
 
-    printf("col_to_check = %d\nx = %d\nsprite_pos_y = %.2f\n", col_to_check, x - 61, sprite_pos_y);
-    for (int i = 0; i < col_to_check; i++) {
-        if (map->next == NULL)
-            printf("WHY IS IT NULL AT i = %d?\n", i);
+    for (int i = 0; i < RABBIT_COL; i++)
+        map = map->next;
+    block_pos_y = sfSprite_getPosition(map->col[line_to_check].sprite).y;
+    for (int i = 0; i < 2; i++) {
+        if (sprite_pos_y >= block_pos_y &&
+            sprite_pos_y <= block_pos_y + 32 &&
+            map->col[line_to_check].type > 0)
+            return 1;
+        if (sprite_pos_y + 60 >= block_pos_y &&
+            sprite_pos_y + 60 <= block_pos_y + 32 &&
+            map->col[line_to_check].type > 0)
+            return 1;
         map = map->next;
     }
-    printf("was here with %d\n", line_to_check);
-    block_pos_y = sfSprite_getPosition(map->col[line_to_check].sprite).y;
-    printf("was after with %d\n", line_to_check);
-
-    if (sprite_pos_y + 61 >= block_pos_y &&
-        sprite_pos_y + 61 <= block_pos_y + 32 &&
-        map->col[line_to_check].type > 0)
-        printf("COLLISION\n");
-    else
-        printf("FREE\n");
+    return 0;
 }
 
-void display_map(map_info *map, sfRenderWindow *window)
+void display_move_map(map_info *map, sfRenderWindow *window)
 {
-    map_col *actual = map->data;
+    map_col *actual = NULL;
 
+    move_blocks(1, 5, map);
+    actual = map->data;
     while (actual != NULL) {
         for (int i = 0; i < MAP_HEIGHT; i++)
             sfRenderWindow_drawSprite(window, actual->col[i].sprite, NULL);
@@ -82,24 +86,22 @@ int main(void)
     sfClock *clock = sfClock_create();
     sfTime time;
     float seconds;
-    sfVector2f testpos = {500, 800};
+    sfVector2f testpos = {500, 0};
     gameobj *rabbit = new_entity("assets/rabbit.png", testpos, 0);
+    parallax *bg = new_industrial();
 
     while (sfRenderWindow_isOpen(window)) {
-        map_col *test = map->data;
         sfRenderWindow_clear(window, sfBlack);
-        display_map(map, window);
-        move_blocks(1, 5, map);
-        bottom_collision(rabbit, map->data, map->iteration);
-        sfRenderWindow_drawSprite(window, rabbit->sprite, NULL);
+        display_parallax(bg, window);
+        display_move_map(map, window);
+        bottom_collision(rabbit, map);
         time = sfClock_getElapsedTime(clock);
         seconds = time.microseconds / 1000000.0;
-        //display_parallax(bg, window);
+        //if (seconds >= .01) {
+            animate_rabbit(rabbit, map, clock);
+        //}
+        sfRenderWindow_drawSprite(window, rabbit->sprite, NULL);
         sfRenderWindow_display(window);
-        if (seconds >= .1) {
-            animate(rabbit, 81, 316);
-            sfClock_restart(clock);
-        }
         while(sfRenderWindow_pollEvent(window, &event))
             event_handeling(event, window, rabbit);
     }
