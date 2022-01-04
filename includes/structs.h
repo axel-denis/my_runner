@@ -50,8 +50,12 @@ typedef struct map_info {
     sfTexture *texture;
 } map_info;
 
+map_col *map_col_reader(char *buffer, int x, int map_len, sfTexture *texture,
+                        float last_pos);
+
 gameobj *new_duck(const char *path_sprite, sfVector2f pos);
 void animate(gameobj *obj, int offset, int max);
+void move_blocks(int direction, int speed, map_info *map);
 
 parallax *new_mountain();
 parallax *new_industrial();

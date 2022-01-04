@@ -7,6 +7,10 @@
 
 SRC	=	src/main.c				\
 		src/struct_functions.c	\
+		src/anims_displays.c	\
+		src/frees.c				\
+		src/loaders.c			\
+		src/utils.c				\
 
 OBJ	=	$(SRC:.c=.o)
 
