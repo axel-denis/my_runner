@@ -86,7 +86,6 @@ void gravity(gameobj *obj, map_info *map)
 
 void animate_rabbit(gameobj *obj, map_info *map, sfClock *clock)
 {
-    printf("velocité : %.2f\n", obj->velocity.y);
     run_rabbit(obj, clock);
     if (obj->velocity.y >= 0)
         gravity(obj, map);

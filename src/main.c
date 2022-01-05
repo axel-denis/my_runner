@@ -12,18 +12,25 @@
 #include "../includes/frees.h"
 #include "../includes/loaders.h"
 
-void event_handeling(sfEvent event, sfRenderWindow *window, gameobj *obj)
+int event_handeling(sfEvent event, sfRenderWindow *window, gameobj *obj)
 {
     sfVector2f vect;
 
-    if (event.type == sfEvtClosed)
+    if (event.type == sfEvtClosed) {
         sfRenderWindow_close(window);
-    if (event.type == sfEvtKeyPressed && event.key.code == sfKeyEscape)
-        sfRenderWindow_close(window);
-    if (event.type == sfEvtKeyPressed && event.key.code == sfKeySpace) {
-        printf("Space\n");
-        obj->velocity.y = -20;
+        return -1;
     }
+    if (event.type == sfEvtKeyPressed && event.key.code == sfKeyEscape) {
+        printf("Escape\n");
+        sfRenderWindow_close(window);
+        return -1;
+    }
+    if (event.type == sfEvtKeyPressed && event.key.code == sfKeySpace) {
+        obj->velocity.y = -20;
+        printf("Space\n");
+        return 2;
+    }
+    return 0;
 }
 
 //Vérifie les collisions pour le dessous du lapin à ses pixels 10 et 70
@@ -78,15 +85,53 @@ void display_move_map(map_info *map, sfRenderWindow *window)
     }
 }
 
-int conditions(sfRenderWindow *wind, map_info *map, gameobj *obj, parallax *bg)
+int process(sfRenderWindow *wind, map_info *map, gameobj *obj, parallax *bg)
 {
+    sfVector2f pos = sfSprite_getPosition(obj->sprite);
+
     display_parallax(bg, wind);
     display_move_map(map, wind);
-    bottom_collision(obj, map);
-    if (front_collision(obj, map)) {
+    if (pos.y >= HEIGHT - 80 || pos.y <= 0)
+        return 1;
+    if (front_collision(obj, map->data))
         return 1; // écran de perte
-    }
+    animate_rabbit(obj, map, map->clock);
     return 0;
+}
+
+sfText *create_text(char *str, int size, sfVector2f pos, sfFont *font)
+{
+    sfText *text = sfText_create();
+
+    sfText_setString(text, str);
+    sfText_setCharacterSize(text, size);
+    sfText_setFont(text, font);
+    sfText_setPosition(text, pos);
+    return text;
+}
+
+int main_menu(sfRenderWindow *window, gameobj *rabbit)
+{
+    sfEvent event;
+    sfVector2f pos = {600, 10};
+    parallax *bg = new_mountain();
+    sfFont *font = sfFont_createFromFile("assets/fonts/ARCADECLASSIC.TTF");
+    sfText *text = create_text("RABBIT RUNNER", 100, pos, font);
+    int condition = 0;
+
+    while (condition == 0) {
+        sfRenderWindow_clear(window, sfBlack);
+        display_parallax(bg, window);
+        sfRenderWindow_drawText(window, text, NULL);
+        sfRenderWindow_display(window);
+        while(sfRenderWindow_pollEvent(window, &event)) {
+            condition += event_handeling(event, window, rabbit);
+            printf("conditon = %d\n", condition);
+        }
+    }
+    sfText_destroy(text);
+    free_parallax(bg);
+    return condition;
 }
 
 int main(void)
@@ -94,15 +139,19 @@ int main(void)
     sfEvent event;
     map_info *map = map_creator();
     sfRenderWindow *window = create_window();
-    sfClock *clock = sfClock_create();
-    sfVector2f testpos = {500, 0};
+    sfVector2f testpos = {500, 300};
     gameobj *rabbit = new_entity("assets/rabbit.png", testpos, 0);
     parallax *bg = new_industrial();
 
+    if (main_menu(window, rabbit) == -1)
+        return 0;
+    printf("passed here\n");
     while (sfRenderWindow_isOpen(window)) {
         sfRenderWindow_clear(window, sfBlack);
-        conditions(window, map, rabbit, bg);
-        animate_rabbit(rabbit, map, clock);
+        if (process(window, map, rabbit, bg)) {
+            printf("mort\n");
+            exit(84);
+        }
         sfRenderWindow_drawSprite(window, rabbit->sprite, NULL);
         sfRenderWindow_display(window);
         while(sfRenderWindow_pollEvent(window, &event))

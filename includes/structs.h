@@ -43,6 +43,7 @@ typedef struct map_info {
     int iteration;
     int len;
     sfTexture *texture;
+    sfClock *clock;
 } map_info;
 
 map_col *map_col_reader(char *buffer, int x, int map_len, sfTexture *texture,

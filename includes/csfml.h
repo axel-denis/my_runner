@@ -13,7 +13,6 @@
     #include <stdarg.h>
     #include <string.h>
     #include <unistd.h>
-    #include <stddef.h>
     #include <math.h>
 
     #include <SFML/Window.h>
@@ -25,4 +24,7 @@
     #include <fcntl.h>
     #include <sys/types.h>
     #include <sys/stat.h>
+
+    #include <SFML/System/Vector2.h>
+    #include <SFML/System/InputStream.h>
 #endif

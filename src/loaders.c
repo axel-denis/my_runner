@@ -49,6 +49,7 @@ map_info *map_creator(void)
     map->len = map_len(map->buffer);
     map->data = map_init(map->buffer, map->len, map->texture);
     map->iteration = INITIAL_MAP_WIDTH;
+    map->clock = sfClock_create();
     return map;
 }
 
