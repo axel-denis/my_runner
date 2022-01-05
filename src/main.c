@@ -20,25 +20,9 @@ void event_handeling(sfEvent event, sfRenderWindow *window, gameobj *obj)
         sfRenderWindow_close(window);
     if (event.type == sfEvtKeyPressed && event.key.code == sfKeyEscape)
         sfRenderWindow_close(window);
-    if (event.type == sfEvtKeyPressed && event.key.code == sfKeyRight) {
-        vect.x = 10;
-        sfSprite_move(obj->sprite, vect);
-    }
     if (event.type == sfEvtKeyPressed && event.key.code == sfKeySpace) {
         printf("Space\n");
         obj->velocity.y = -20;
-    }
-    if (event.type == sfEvtKeyPressed && event.key.code == sfKeyLeft) {
-        vect.x = -10;
-        sfSprite_move(obj->sprite, vect);
-    }
-    if (event.type == sfEvtKeyPressed && event.key.code == sfKeyUp) {
-        vect.y = -10;
-        sfSprite_move(obj->sprite, vect);
-    }
-    if (event.type == sfEvtKeyPressed && event.key.code == sfKeyDown) {
-        vect.y = 10;
-        sfSprite_move(obj->sprite, vect);
     }
 }
 
@@ -56,16 +40,28 @@ int bottom_collision(gameobj *entity, map_col *map)
         map = map->next;
     block_pos_y = sfSprite_getPosition(map->col[line_to_check].sprite).y;
     for (int i = 0; i < 2; i++) {
-        if (sprite_pos_y >= block_pos_y &&
-            sprite_pos_y <= block_pos_y + 32 &&
-            map->col[line_to_check].type > 0)
-            return 1;
         if (sprite_pos_y + 60 >= block_pos_y &&
             sprite_pos_y + 60 <= block_pos_y + 32 &&
             map->col[line_to_check].type > 0)
             return 1;
         map = map->next;
     }
+    return 0;
+}
+
+int front_collision(gameobj *entity, map_col *map)
+{
+    float sprite_pos_y = sfSprite_getPosition(entity->sprite).y;
+    float block_pos_y = 0.0;
+    int line_to_check = (sprite_pos_y + 61) / 32 - 1;
+
+    for (int i = 0; i < RABBIT_COL + 1; i++)
+        map = map->next;
+    block_pos_y = sfSprite_getPosition(map->col[line_to_check].sprite).y;
+    if (sprite_pos_y + 30 >= block_pos_y &&
+        sprite_pos_y + 30 <= block_pos_y + 32 &&
+        map->col[line_to_check].type > 0)
+        return 1;
     return 0;
 }
 
@@ -82,6 +78,17 @@ void display_move_map(map_info *map, sfRenderWindow *window)
     }
 }
 
+int conditions(sfRenderWindow *wind, map_info *map, gameobj *obj, parallax *bg)
+{
+    display_parallax(bg, wind);
+    display_move_map(map, wind);
+    bottom_collision(obj, map);
+    if (front_collision(obj, map)) {
+        return 1; // écran de perte
+    }
+    return 0;
+}
+
 int main(void)
 {
     sfEvent event;
@@ -94,9 +101,7 @@ int main(void)
 
     while (sfRenderWindow_isOpen(window)) {
         sfRenderWindow_clear(window, sfBlack);
-        display_parallax(bg, window);
-        display_move_map(map, window);
-        bottom_collision(rabbit, map);
+        conditions(window, map, rabbit, bg);
         animate_rabbit(rabbit, map, clock);
         sfRenderWindow_drawSprite(window, rabbit->sprite, NULL);
         sfRenderWindow_display(window);
