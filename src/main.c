@@ -12,7 +12,7 @@
 #include "../includes/frees.h"
 #include "../includes/loaders.h"
 
-int event_handeling(sfEvent event, sfRenderWindow *window, gameobj *obj)
+int events(sfEvent event, sfRenderWindow *window, gameobj *obj, map_info *map)
 {
     sfVector2f vect;
 
@@ -21,13 +21,13 @@ int event_handeling(sfEvent event, sfRenderWindow *window, gameobj *obj)
         return -1;
     }
     if (event.type == sfEvtKeyPressed && event.key.code == sfKeyEscape) {
-        printf("Escape\n");
         sfRenderWindow_close(window);
         return -1;
     }
     if (event.type == sfEvtKeyPressed && event.key.code == sfKeySpace) {
-        obj->velocity.y = -20;
-        printf("Space\n");
+        printf("space\n");
+        if (soft_bottom_collision(obj, map))
+            obj->velocity.y = -20;
         return 2;
     }
     return 0;
@@ -50,6 +50,30 @@ int bottom_collision(gameobj *entity, map_col *map)
         if (sprite_pos_y + 60 >= block_pos_y &&
             sprite_pos_y + 60 <= block_pos_y + 32 &&
             map->col[line_to_check].type > 0)
+            return 1;
+        map = map->next;
+    }
+    return 0;
+}
+
+int soft_bottom_collision(gameobj *entity, map_col *map)
+{
+    float sprite_pos_y = sfSprite_getPosition(entity->sprite).y;
+    float block_y = 0.0;
+    int line_to_check = (sprite_pos_y + 61) / 32;
+
+    for (int i = 0; i < RABBIT_COL; i++)
+        map = map->next;
+    for (int i = 0; i < 4; i++) {
+        block_y = sfSprite_getPosition(map->col[line_to_check].sprite).y;
+        if (sprite_pos_y + 60 >= block_y &&
+            sprite_pos_y + 60 <= block_y + 32 &&
+            map->col[line_to_check].type > 0)
+            return 1;
+        block_y = sfSprite_getPosition(map->col[line_to_check + 1].sprite).y;
+        if (sprite_pos_y + 95 >= block_y &&
+            sprite_pos_y + 95 <= block_y + 32 &&
+            map->col[line_to_check + 1].type > 0)
             return 1;
         map = map->next;
     }
@@ -110,7 +134,7 @@ sfText *create_text(char *str, int size, sfVector2f pos, sfFont *font)
     return text;
 }
 
-int main_menu(sfRenderWindow *window, gameobj *rabbit)
+int main_menu(sfRenderWindow *window, gameobj *rabbit, map_info *map)
 {
     sfEvent event;
     sfVector2f pos = {600, 10};
@@ -124,10 +148,8 @@ int main_menu(sfRenderWindow *window, gameobj *rabbit)
         display_parallax(bg, window);
         sfRenderWindow_drawText(window, text, NULL);
         sfRenderWindow_display(window);
-        while(sfRenderWindow_pollEvent(window, &event)) {
-            condition += event_handeling(event, window, rabbit);
-            printf("conditon = %d\n", condition);
-        }
+        while(sfRenderWindow_pollEvent(window, &event))
+            condition += events(event, window, rabbit, map);
     }
     sfText_destroy(text);
     free_parallax(bg);
@@ -143,9 +165,8 @@ int main(void)
     gameobj *rabbit = new_entity("assets/rabbit.png", testpos, 0);
     parallax *bg = new_industrial();
 
-    if (main_menu(window, rabbit) == -1)
+    if (main_menu(window, rabbit, map) == -1)
         return 0;
-    printf("passed here\n");
     while (sfRenderWindow_isOpen(window)) {
         sfRenderWindow_clear(window, sfBlack);
         if (process(window, map, rabbit, bg)) {
@@ -155,7 +176,7 @@ int main(void)
         sfRenderWindow_drawSprite(window, rabbit->sprite, NULL);
         sfRenderWindow_display(window);
         while(sfRenderWindow_pollEvent(window, &event))
-            event_handeling(event, window, rabbit);
+            events(event, window, rabbit, map);
     }
     free_map(map);
     return 0;
