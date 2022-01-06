@@ -5,6 +5,8 @@
 ** affiche le nombre donné en parametre. Marche avec un int
 */
 
+#include <stdlib.h>
+
 int power_ten(int x, int y)
 {
     for (y; y > 0; y--) {

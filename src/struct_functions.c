@@ -13,6 +13,7 @@
 gameobj *new_entity(const char *path_sprite, sfVector2f pos, int type)
 {
     gameobj *obj = malloc(sizeof(gameobj));
+    sfVector2f scale = {0.5, 0.5};
 
     obj->indice = type;
     obj->velocity.x = 0;
@@ -22,8 +23,12 @@ gameobj *new_entity(const char *path_sprite, sfVector2f pos, int type)
     obj->rect.width = 81;
     obj->rect.height = 60;
     obj->sprite = sfSprite_create();
-    sfSprite_setTexture(obj->sprite, sfTexture_createFromFile(path_sprite, NULL), sfTrue);
-    sfSprite_setTextureRect(obj->sprite, obj->rect);
+    sfSprite_setTexture(obj->sprite, \
+        sfTexture_createFromFile(path_sprite, NULL), sfTrue);
+    if (type == 0)
+        sfSprite_setTextureRect(obj->sprite, obj->rect);
+    if (type == 2)
+        sfSprite_setScale(obj->sprite, scale);
     sfSprite_setPosition(obj->sprite, pos);
     return obj;
 }

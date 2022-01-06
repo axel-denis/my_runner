@@ -11,26 +11,30 @@ SRC	=	src/main.c				\
 		src/frees.c				\
 		src/loaders.c			\
 		src/utils.c				\
+		src/collisions.c		\
+		src/events.c			\
+		src/menus.c				\
+		src/rabbit_run.c		\
 
-OBJ	=	$(SRC:.c=.o)
+OBJ		=		$(SRC:.c=.o)
 
-NAME	=	my_runner # VERIFIER QUE C'EST VALIDE
+NAME	=		my_runner # VERIFIER QUE C'EST VALIDE
 
-CFLAGS	+=	-Wall -Wextra
+CFLAGS	+=		-Wall -Wextra
 
 $(NAME):	$(OBJ)
-	make -C lib/
-	gcc -o $(NAME) $(OBJ) $(CFLAGS) -lcsfml-graphics -lcsfml-system -lcsfml-window -lm \
-	-L. ./lib/lib.a
+			make -C lib/
+			gcc -o $(NAME) $(OBJ) $(CFLAGS) -lcsfml-graphics -lcsfml-system \
+			-lcsfml-window -lm -L. ./lib/lib.a
 
-all:	$(NAME)
+all:		$(NAME)
 
 clean:
-	rm -f $(OBJ)
-	rm -f criterion_test
+			rm -f $(OBJ)
+			rm -f criterion_test
 
 fclean: clean
-	rm -f $(NAME)
+			rm -f $(NAME)
 
 re: fclean all
 
