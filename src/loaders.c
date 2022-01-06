@@ -46,10 +46,10 @@ map_info *map_creator(void)
 
     map->sounds[0] = sfMusic_createFromFile("assets/audio/main_menu.ogg");
     sfMusic_setLoop(map->sounds[0], sfTrue);
-    sfMusic_setVolume(map->sounds[0], 0);
+    sfMusic_setVolume(map->sounds[0], 40);
     map->sounds[1] = sfMusic_createFromFile("assets/audio/main_game.ogg");
     sfMusic_setLoop(map->sounds[1], sfTrue);
-    sfMusic_setVolume(map->sounds[1], 0);
+    sfMusic_setVolume(map->sounds[1], 40);
     map->sounds[2] = sfMusic_createFromFile("assets/audio/jump.ogg");
     map->buffer = read_map_file("map.txt");
     map->texture = sfTexture_createFromFile("./assets/Tiles.psd", NULL);
