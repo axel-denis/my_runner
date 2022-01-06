@@ -32,11 +32,20 @@ void display_parallax(parallax *layers, sfRenderWindow *window)
     }
 }
 
-void run_rabbit(gameobj *obj, sfClock *clock)
+void run_rabbit(gameobj *obj, sfClock *clock, map_info *map)
 {
     sfTime time = sfClock_getElapsedTime(clock);
     float seconds = time.microseconds / 1000000.0;
 
+    if (obj->velocity.y > 1) {
+        obj->rect.left = RABBIT_WIDTH * 3;
+        sfSprite_setTextureRect(obj->sprite, obj->rect);
+        return;
+    } else if (obj->velocity.y < 0) {
+        obj->rect.left = RABBIT_WIDTH * 2;
+        sfSprite_setTextureRect(obj->sprite, obj->rect);
+        return;
+    }
     if (seconds >= 0.1) {
         if (obj->rect.left + RABBIT_WIDTH >= RABBIT_WIDTH * 4)
             obj->rect.left = 0;
@@ -86,7 +95,7 @@ void gravity(gameobj *obj, map_info *map)
 
 void animate_rabbit(gameobj *obj, map_info *map, sfClock *clock)
 {
-    run_rabbit(obj, clock);
+    run_rabbit(obj, clock, map);
     if (obj->velocity.y >= 0)
         gravity(obj, map);
     else
