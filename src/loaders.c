@@ -33,7 +33,7 @@ sfRenderWindow *create_window(void)
     video_mode.width = WIDTH;
     video_mode.height = HEIGHT;
     video_mode.bitsPerPixel = 32;
-    window = sfRenderWindow_create(video_mode, "RABBIT",
+    window = sfRenderWindow_create(video_mode, "RABBIT RUNNER",
     sfDefaultStyle | sfClose | sfResize, NULL);
     sfRenderWindow_setFramerateLimit(window, 75);
     return window;
@@ -42,6 +42,7 @@ sfRenderWindow *create_window(void)
 map_info *map_creator(void)
 {
     map_info *map = malloc(sizeof(map_info));
+    sfVector2f pos = {600, 0};
 
     map->buffer = read_map_file("map.txt");
     map->texture = sfTexture_createFromFile("./assets/Tiles.psd", NULL);
@@ -50,6 +51,9 @@ map_info *map_creator(void)
     map->data = map_init(map->buffer, map->len, map->texture);
     map->iteration = INITIAL_MAP_WIDTH;
     map->clock = sfClock_create();
+    map->text.font = sfFont_createFromFile("assets/fonts/ARCADECLASSIC.TTF");
+    map->text.text = create_text("RABBIT RUNNER", 100, pos, map->text.font);
+    map->text.pos = pos;
     return map;
 }
 

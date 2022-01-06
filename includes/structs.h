@@ -36,11 +36,18 @@ typedef struct parallax {
     struct parallax *next;
 } parallax;
 
+typedef struct texts {
+    sfFont *font;
+    sfText *text;
+    sfVector2f pos;
+} texts;
+
 typedef struct map_info {
     char *buffer;
     map_col *data;
     parallax *bg;
     int iteration;
+    texts text;
     int len;
     sfTexture *texture;
     sfClock *clock;

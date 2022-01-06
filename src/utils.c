@@ -19,6 +19,17 @@ int map_len(char *buffer)
     return i / CHUNK;
 }
 
+sfText *create_text(char *str, int size, sfVector2f pos, sfFont *font)
+{
+    sfText *text = sfText_create();
+
+    sfText_setString(text, str);
+    sfText_setCharacterSize(text, size);
+    sfText_setFont(text, font);
+    sfText_setPosition(text, pos);
+    return text;
+}
+
 void set_tile_rectangle(sfSprite *sprite, int top, int left)
 {
     sfIntRect rect = {top, left, 32, 32};

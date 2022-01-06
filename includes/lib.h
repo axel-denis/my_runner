@@ -13,5 +13,6 @@ int my_get_nbr(char *str);
 void my_put_nbr(int nb);
 void my_putchar(char c);
 void my_putstr(char const *str);
+char *my_nbr_to_str(int nb);
 
 #endif

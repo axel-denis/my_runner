@@ -10,6 +10,7 @@ SRC	=	my_get_nbr.c	\
 		my_putchar.c	\
 		my_putstr.c		\
 		my_strlen.c		\
+		my_nbr_to_str.c	\
 
 OBJ	=	$(SRC:.c=.o)
 

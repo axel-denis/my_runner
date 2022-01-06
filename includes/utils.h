@@ -17,5 +17,6 @@
 int map_len(char *buffer);
 void set_tile_rectangle(sfSprite *sprite, int top, int left);
 sfSprite *block_sprite(int type, sfTexture *blocks_texture);
+sfText *create_text(char *str, int size, sfVector2f pos, sfFont *font);
 
 #endif

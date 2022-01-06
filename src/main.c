@@ -120,39 +120,32 @@ int process(sfRenderWindow *wind, map_info *map, gameobj *obj, parallax *bg)
     if (front_collision(obj, map->data))
         return 1; // écran de perte
     animate_rabbit(obj, map, map->clock);
+    sfText_setString(map->text.text, my_nbr_to_str(map->iteration));
+    sfRenderWindow_drawText(wind, map->text.text, NULL);
     return 0;
-}
-
-sfText *create_text(char *str, int size, sfVector2f pos, sfFont *font)
-{
-    sfText *text = sfText_create();
-
-    sfText_setString(text, str);
-    sfText_setCharacterSize(text, size);
-    sfText_setFont(text, font);
-    sfText_setPosition(text, pos);
-    return text;
 }
 
 int main_menu(sfRenderWindow *window, gameobj *rabbit, map_info *map)
 {
     sfEvent event;
-    sfVector2f pos = {600, 10};
     parallax *bg = new_mountain();
-    sfFont *font = sfFont_createFromFile("assets/fonts/ARCADECLASSIC.TTF");
-    sfText *text = create_text("RABBIT RUNNER", 100, pos, font);
     int condition = 0;
 
     while (condition == 0) {
         sfRenderWindow_clear(window, sfBlack);
         display_parallax(bg, window);
-        sfRenderWindow_drawText(window, text, NULL);
+        sfRenderWindow_drawText(window, map->text.text, NULL);
         sfRenderWindow_display(window);
         while(sfRenderWindow_pollEvent(window, &event))
             condition += events(event, window, rabbit, map);
     }
-    sfText_destroy(text);
     free_parallax(bg);
+    sfText_setCharacterSize(map->text.text, 66);
+    sfText_setOutlineColor(map->text.text, sfBlack);
+    sfText_setOutlineThickness(map->text.text, 2);
+    map->text.pos.y = 33;
+    map->text.pos.x = 66;
+    sfText_setPosition(map->text.text, map->text.pos);
     return condition;
 }
 
@@ -171,7 +164,7 @@ int main(void)
         sfRenderWindow_clear(window, sfBlack);
         if (process(window, map, rabbit, bg)) {
             printf("mort\n");
-            exit(84);
+            exit(0);
         }
         sfRenderWindow_drawSprite(window, rabbit->sprite, NULL);
         sfRenderWindow_display(window);
