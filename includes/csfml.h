@@ -26,5 +26,12 @@
     #include <sys/stat.h>
 
     #include <SFML/System/Vector2.h>
+    #include <SFML/System/Vector3.h>
     #include <SFML/System/InputStream.h>
+
+    #include <SFML/Audio.h>
+    #include <SFML/Audio/Export.h>
+    #include <SFML/Audio/SoundStatus.h>
+    #include <SFML/Audio/Types.h>
+    #include <SFML/System/Time.h>
 #endif

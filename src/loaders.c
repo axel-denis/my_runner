@@ -44,6 +44,13 @@ map_info *map_creator(void)
     map_info *map = malloc(sizeof(map_info));
     sfVector2f pos = {600, 0};
 
+    map->sounds[0] = sfMusic_createFromFile("assets/audio/main_menu.ogg");
+    sfMusic_setLoop(map->sounds[0], sfTrue);
+    sfMusic_setVolume(map->sounds[0], 0);
+    map->sounds[1] = sfMusic_createFromFile("assets/audio/main_game.ogg");
+    sfMusic_setLoop(map->sounds[1], sfTrue);
+    sfMusic_setVolume(map->sounds[1], 0);
+    map->sounds[2] = sfMusic_createFromFile("assets/audio/jump.ogg");
     map->buffer = read_map_file("map.txt");
     map->texture = sfTexture_createFromFile("./assets/Tiles.psd", NULL);
     map->bg = new_mountain();

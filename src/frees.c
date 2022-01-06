@@ -34,5 +34,10 @@ void free_map(map_info *map)
     free_col(map->data);
     free_parallax(map->bg);
     sfTexture_destroy(map->texture);
+    sfMusic_destroy(map->sounds[0]);
+    sfMusic_destroy(map->sounds[1]);
+    sfMusic_destroy(map->sounds[2]);
+    sfText_destroy(map->text.text);
+    sfFont_destroy(map->text.font);
     free(map);
 }

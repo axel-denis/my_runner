@@ -25,7 +25,7 @@ CFLAGS	+=		-Wall -Wextra
 $(NAME):	$(OBJ)
 			make -C lib/
 			gcc -o $(NAME) $(OBJ) $(CFLAGS) -lcsfml-graphics -lcsfml-system \
-			-lcsfml-window -lm -L. ./lib/lib.a
+			-lcsfml-window -lcsfml-audio -lm -L. ./lib/lib.a
 
 all:		$(NAME)
 

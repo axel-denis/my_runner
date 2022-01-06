@@ -24,6 +24,16 @@ void show_menu(sfRenderWindow *win, parallax *bg, sfText *title, gameobj *but)
     sfRenderWindow_display(win);
 }
 
+void reconfigure_text(map_info *map)
+{
+    sfText_setCharacterSize(map->text.text, 66);
+    sfText_setOutlineColor(map->text.text, sfBlack);
+    sfText_setOutlineThickness(map->text.text, 2);
+    map->text.pos.y = 33;
+    map->text.pos.x = 66;
+    sfText_setPosition(map->text.text, map->text.pos);
+}
+
 int main_menu(sfRenderWindow *window, gameobj *rabbit, map_info *map)
 {
     sfEvent event;
@@ -32,17 +42,15 @@ int main_menu(sfRenderWindow *window, gameobj *rabbit, map_info *map)
     sfVector2f pos = {610, 450};
     gameobj *button = new_entity("assets/start.png", pos, 2);
 
+    sfMusic_play(map->sounds[0]);
     while (condition == 0) {
         show_menu(window, bg, map->text.text, button);
         while(sfRenderWindow_pollEvent(window, &event))
             condition += events(event, window, rabbit, map);
     }
+    sfMusic_pause(map->sounds[0]);
+    sfMusic_play(map->sounds[1]);
     free_parallax(bg);
-    sfText_setCharacterSize(map->text.text, 66);
-    sfText_setOutlineColor(map->text.text, sfBlack);
-    sfText_setOutlineThickness(map->text.text, 2);
-    map->text.pos.y = 33;
-    map->text.pos.x = 66;
-    sfText_setPosition(map->text.text, map->text.pos);
+    reconfigure_text(map);
     return condition;
 }

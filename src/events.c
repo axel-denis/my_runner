@@ -22,8 +22,11 @@ int evts(sfEvent event, sfRenderWindow *window, gameobj *obj, map_info *map)
         return 2;
     }
     if (event.type == sfEvtMouseButtonPressed) {
-        if (soft_bottom_collision(obj, map->data))
+        if (soft_bottom_collision(obj, map->data)) {
+            sfMusic_stop(map->sounds[2]);
+            sfMusic_play(map->sounds[2]);
             obj->velocity.y = -20;
+        }
         return 0;
     }
     return 0;
@@ -40,8 +43,11 @@ int events(sfEvent event, sfRenderWindow *window, gameobj *obj, map_info *map)
         return -1;
     }
     if (event.type == sfEvtKeyPressed && event.key.code == sfKeySpace) {
-        if (soft_bottom_collision(obj, map->data))
+        if (soft_bottom_collision(obj, map->data)) {;
+            sfMusic_stop(map->sounds[2]);
+            sfMusic_play(map->sounds[2]);
             obj->velocity.y = -20;
+        }
         return 0;
     }
     return evts(event, window, obj, map);

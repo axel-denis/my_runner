@@ -42,6 +42,7 @@ int process(sfRenderWindow *wind, map_info *map, gameobj *obj, parallax *bg)
     animate_rabbit(obj, map, map->clock);
     sfText_setString(map->text.text, my_nbr_to_str(map->iteration));
     sfRenderWindow_drawText(wind, map->text.text, NULL);
+    sfRenderWindow_drawSprite(wind, obj->sprite, NULL);
     return 0;
 }
 
@@ -58,15 +59,13 @@ int main(void)
         return 0;
     while (sfRenderWindow_isOpen(window)) {
         sfRenderWindow_clear(window, sfBlack);
-        if (process(window, map, rabbit, bg)) {
-            printf("mort");
-            exit(0);
-        }
-        sfRenderWindow_drawSprite(window, rabbit->sprite, NULL);
+        if (process(window, map, rabbit, bg))
+            break;
         sfRenderWindow_display(window);
         while(sfRenderWindow_pollEvent(window, &event))
             events(event, window, rabbit, map);
     }
+    sfRenderWindow_destroy(window);
     free_map(map);
     return 0;
 }
