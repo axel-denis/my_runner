@@ -68,7 +68,6 @@ map_col *map_col_reader(char *buffer, int x, int map_len, sfTexture *texture,
                         float last_pos)
 {
     map_col *actual = malloc(sizeof(map_col));
-    int tmp_final_y = 0;
 
     actual->col = malloc(sizeof(block) * MAP_HEIGHT);
     actual->next = NULL;
@@ -78,9 +77,10 @@ map_col *map_col_reader(char *buffer, int x, int map_len, sfTexture *texture,
         else
             actual->col[i].pos.x = x * 32;
         actual->col[i].pos.y = i * 32;
-        tmp_final_y = 0; //my_get_nbr(&buffer[(x * CHUNK) + ((map_len * CHUNK + 2) * i) + 1]);
-        actual->col[i].final_y = tmp_final_y;
-        actual->col[i].type = (int) (buffer[(x * CHUNK) + ((map_len * CHUNK + 2) * i)] - '0');
+        actual->col[i].type = (int) (buffer[(x * CHUNK) + \
+            ((map_len * CHUNK + 2) * i)] - '0');
+        if (actual->col[i].type + '0' == '-')
+            return NULL;
         actual->col[i].sprite = block_sprite(actual->col[i].type, texture);
         sfSprite_setPosition(actual->col[i].sprite, actual->col[i].pos);
     }

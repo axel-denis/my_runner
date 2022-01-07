@@ -13,7 +13,6 @@ typedef struct block {
     sfVector2f pos;
     sfSprite *sprite;
     int type;
-    int final_y;
 } block;
 
 typedef struct map_col {

@@ -55,7 +55,6 @@ void move_blocks(int direction, int speed, map_info *map)
             temp->next = map->data;
             map->data = temp;
             actual = temp;
-        } else {
         }
         for (int i = 0; i < MAP_HEIGHT; i++) {
             offset = sfSprite_getPosition(actual->col[i].sprite);
