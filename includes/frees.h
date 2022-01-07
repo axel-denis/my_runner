@@ -16,5 +16,6 @@
 void free_col(map_col *col);
 void free_parallax(parallax *bg);
 void free_map(map_info *map);
+void free_entity(gameobj *entity);
 
 #endif

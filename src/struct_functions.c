@@ -23,8 +23,8 @@ gameobj *new_entity(const char *path_sprite, sfVector2f pos, int type)
     obj->rect.width = 81;
     obj->rect.height = 60;
     obj->sprite = sfSprite_create();
-    sfSprite_setTexture(obj->sprite, \
-        sfTexture_createFromFile(path_sprite, NULL), sfTrue);
+    obj->texture = sfTexture_createFromFile(path_sprite, NULL);
+    sfSprite_setTexture(obj->sprite, obj->texture, sfTrue);
     if (type == 0)
         sfSprite_setTextureRect(obj->sprite, obj->rect);
     if (type == 2)
@@ -33,11 +33,22 @@ gameobj *new_entity(const char *path_sprite, sfVector2f pos, int type)
     return obj;
 }
 
+void mount_layer(parallax *actual, char *path, int index, sfVector2f scale)
+{
+    sfVector2f pos = {0, 0};
+
+    actual->layer = index;
+    actual->pos = pos;
+    actual->sprite = sfSprite_create();
+    actual->texture = sfTexture_createFromFile(path, NULL);
+    sfSprite_setTexture(actual->sprite, actual->texture, sfTrue);
+    sfSprite_setScale(actual->sprite, scale);
+}
+
 parallax *new_mountain(void)
 {
     parallax *first =  malloc(sizeof(parallax));
     parallax *actual = first;
-    sfVector2f pos = {0, 0};
     sfVector2f scale;
     char *paths[] = {"assets/layers/sky.png", "assets/layers/clouds_bg.png",
     "assets/layers/glacial_mountains_lightened.png",
@@ -47,12 +58,7 @@ parallax *new_mountain(void)
     scale.x = WIDTH / PARALLAX_WIDTH + 1;
     scale.y = HEIGHT / PARALLAX_HEIGHT + 1;
     for (int i = 0; i < 7; i++) {
-        actual->layer = i;
-        actual->pos = pos;
-        actual->sprite = sfSprite_create();
-        sfSprite_setTexture(actual->sprite, \
-            sfTexture_createFromFile(paths[i], NULL), sfTrue);
-        sfSprite_setScale(actual->sprite, scale);
+        mount_layer(actual, paths[i], i, scale);
         if (i != 6) {
             actual->next = malloc(sizeof(parallax));
             actual = actual->next;
@@ -66,7 +72,6 @@ parallax *new_industrial(void)
 {
     parallax *first =  malloc(sizeof(parallax));
     parallax *actual = first;
-    sfVector2f pos = {0, 0};
     sfVector2f scale;
     char *paths[] = {"assets/layers/1.png", "assets/layers/2.png",
     "assets/layers/3.png", "assets/layers/4.png", "assets/layers/5.png", };
@@ -74,12 +79,7 @@ parallax *new_industrial(void)
     scale.x = WIDTH / 576 + 1;
     scale.y = HEIGHT / 324 + 1;
     for (int i = 0; i < 5; i++) {
-        actual->layer = i;
-        actual->pos = pos;
-        actual->sprite = sfSprite_create();
-        sfSprite_setTexture(actual->sprite, \
-            sfTexture_createFromFile(paths[i], NULL), sfTrue);
-        sfSprite_setScale(actual->sprite, scale);
+        mount_layer(actual, paths[i], i, scale);
         if (i != 4) {
             actual->next = malloc(sizeof(parallax));
             actual = actual->next;

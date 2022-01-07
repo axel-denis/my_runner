@@ -22,7 +22,7 @@ void game_over_display(sfSprite *background, sfSprite *title, map_info *map, \
     int end = 0;
     sfEvent event;
     sfVector2f txt_pos = {600, 500};
-    sfText_setString(map->text.text, "Press ESCAPE to quit");
+    sfText_setString(map->text.text, "Press  ESCAPE  to  quit");
     sfText_setPosition(map->text.text, txt_pos);
     sfRenderWindow_drawSprite(window, background, NULL);
     sfRenderWindow_drawSprite(window, title, NULL);
@@ -50,4 +50,8 @@ void game_over_setup(sfRenderWindow *window, map_info *map)
     sfSprite_setScale(win, scale_win);
     sfSprite_setPosition(win, win_pos);
     game_over_display(bg, win, map, window);
+    sfSprite_destroy(bg);
+    sfSprite_destroy(win);
+    sfTexture_destroy(bg_color);
+    sfTexture_destroy(win_img);
 }

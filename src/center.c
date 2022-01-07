@@ -18,9 +18,10 @@
 #include "../includes/endscreens.h"
 #include "../includes/anims_displays.h"
 
-int process(sfRenderWindow *wind, map_info *map, gameobj *obj, parallax *bg)
+int main_disp(sfRenderWindow *wind, map_info *map, gameobj *obj, parallax *bg)
 {
     sfVector2f pos = sfSprite_getPosition(obj->sprite);
+    char *str = my_nbr_to_str(map->iteration);
 
     display_parallax(bg, wind);
     display_move_map(map, wind);
@@ -29,9 +30,10 @@ int process(sfRenderWindow *wind, map_info *map, gameobj *obj, parallax *bg)
     if (front_collision(obj, map->data))
         return 1;
     animate_rabbit(obj, map, map->clock);
-    sfText_setString(map->text.text, my_nbr_to_str(map->iteration));
+    sfText_setString(map->text.text, str);
     sfRenderWindow_drawText(wind, map->text.text, NULL);
     sfRenderWindow_drawSprite(wind, obj->sprite, NULL);
+    free(str);
     return 0;
 }
 
@@ -43,18 +45,18 @@ int main_process(map_info *map, gameobj *rabbit, sfRenderWindow *window)
 
     while (sfRenderWindow_isOpen(window) && end == 0) {
         sfRenderWindow_clear(window, sfBlack);
-        end = process(window, map, rabbit, bg);
+        end = main_disp(window, map, rabbit, bg);
         sfRenderWindow_display(window);
         while (sfRenderWindow_pollEvent(window, &event))
             events(event, window, rabbit, map);
     }
-    printf("end = %d\n", end);
     if (end == 1)
         game_over_setup(window, map);
     //else
     //    win();
-    sfRenderWindow_destroy(window);
     free_map(map);
+    free_parallax(bg);
+    sfRenderWindow_destroy(window);
     return 0;
 }
 
@@ -68,4 +70,6 @@ int main(void)
     if (main_menu(window, rabbit, map) == -1)
         return 0;
     main_process(map, rabbit, window);
+    free_entity(rabbit);
+    return 0;
 }

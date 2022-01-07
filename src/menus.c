@@ -16,11 +16,11 @@
 #include "../includes/collisions.h"
 #include "../includes/anims_displays.h"
 
-void show_menu(sfRenderWindow *win, parallax *bg, sfText *title, gameobj *but)
+void show_menu(sfRenderWindow *win, map_info *map, gameobj *but)
 {
     sfRenderWindow_clear(win, sfBlack);
-    display_parallax(bg, win);
-    sfRenderWindow_drawText(win, title, NULL);
+    display_parallax(map->bg, win);
+    sfRenderWindow_drawText(win, map->text.text, NULL);
     sfRenderWindow_drawSprite(win, but->sprite, NULL);
     sfRenderWindow_display(win);
 }
@@ -38,20 +38,19 @@ void reconfigure_text(map_info *map)
 int main_menu(sfRenderWindow *window, gameobj *rabbit, map_info *map)
 {
     sfEvent event;
-    parallax *bg = new_mountain();
     int condition = 0;
     sfVector2f pos = {600, 450};
     gameobj *button = new_entity("assets/start.png", pos, 2);
 
     sfMusic_play(map->sounds[0]);
     while (condition == 0) {
-        show_menu(window, bg, map->text.text, button);
+        show_menu(window, map, button);
         while (sfRenderWindow_pollEvent(window, &event))
             condition += events(event, window, rabbit, map);
     }
     sfMusic_pause(map->sounds[0]);
     sfMusic_play(map->sounds[1]);
-    free_parallax(bg);
     reconfigure_text(map);
+    free_entity(button);
     return condition;
 }

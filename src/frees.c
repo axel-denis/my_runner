@@ -25,6 +25,7 @@ void free_parallax(parallax *bg)
     if (bg->next != NULL)
         free_parallax(bg->next);
     sfSprite_destroy(bg->sprite);
+    sfTexture_destroy(bg->texture);
     free(bg);
 }
 
@@ -40,4 +41,11 @@ void free_map(map_info *map)
     sfText_destroy(map->text.text);
     sfFont_destroy(map->text.font);
     free(map);
+}
+
+void free_entity(gameobj *entity)
+{
+    sfSprite_destroy(entity->sprite);
+    sfTexture_destroy(entity->texture);
+    free(entity);
 }

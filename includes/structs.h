@@ -24,6 +24,7 @@ typedef struct gameobj {
     int indice;
     sfVector2f velocity;
     sfSprite *sprite;
+    sfTexture *texture;
     sfIntRect rect;
     struct gameobj *next;
 } gameobj;
@@ -32,6 +33,7 @@ typedef struct parallax {
     int layer;
     sfVector2f pos;
     sfSprite *sprite;
+    sfTexture *texture;
     struct parallax *next;
 } parallax;
 
