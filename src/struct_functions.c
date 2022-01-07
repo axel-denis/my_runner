@@ -39,10 +39,10 @@ parallax *new_mountain(void)
     parallax *actual = first;
     sfVector2f pos = {0, 0};
     sfVector2f scale;
-    char *paths[] = {"assets/Layers/sky.png", "assets/Layers/clouds_bg.png",
-    "assets/Layers/glacial_mountains_lightened.png",
-    "assets/Layers/cloud_lonely.png", "assets/Layers/clouds_mg_3.png",
-    "assets/Layers/clouds_mg_2.png", "assets/Layers/clouds_mg_1.png"};
+    char *paths[] = {"assets/layers/sky.png", "assets/layers/clouds_bg.png",
+    "assets/layers/glacial_mountains_lightened.png",
+    "assets/layers/cloud_lonely.png", "assets/layers/clouds_mg_3.png",
+    "assets/layers/clouds_mg_2.png", "assets/layers/clouds_mg_1.png"};
 
     scale.x = WIDTH / PARALLAX_WIDTH + 1;
     scale.y = HEIGHT / PARALLAX_HEIGHT + 1;
@@ -68,8 +68,8 @@ parallax *new_industrial(void)
     parallax *actual = first;
     sfVector2f pos = {0, 0};
     sfVector2f scale;
-    char *paths[] = {"assets/Layers/1.png", "assets/Layers/2.png",
-    "assets/Layers/3.png", "assets/Layers/4.png", "assets/Layers/5.png", };
+    char *paths[] = {"assets/layers/1.png", "assets/layers/2.png",
+    "assets/layers/3.png", "assets/layers/4.png", "assets/layers/5.png", };
 
     scale.x = WIDTH / 576 + 1;
     scale.y = HEIGHT / 324 + 1;

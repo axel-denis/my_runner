@@ -14,6 +14,7 @@
 #include "../includes/events.h"
 #include "../includes/rabbit_run.h"
 #include "../includes/collisions.h"
+#include "../includes/anims_displays.h"
 
 void show_menu(sfRenderWindow *win, parallax *bg, sfText *title, gameobj *but)
 {

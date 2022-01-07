@@ -11,26 +11,7 @@
 #include "../includes/lib.h"
 #include "../includes/frees.h"
 #include "../includes/utils.h"
-
-void display_parallax(parallax *layers, sfRenderWindow *window)
-{
-    sfVector2f go_right;
-    sfVector2f go_left;
-
-    go_right.x = WIDTH;
-    go_left.x = -WIDTH;
-    while (layers != NULL) {
-        sfRenderWindow_drawSprite(window, layers->sprite, NULL);
-        sfSprite_move(layers->sprite, go_right);
-        sfRenderWindow_drawSprite(window, layers->sprite, NULL);
-        sfSprite_move(layers->sprite, go_left);
-        layers->pos.x -= layers->layer / 3.0;
-        sfSprite_setPosition(layers->sprite, layers->pos);
-        if (sfSprite_getPosition(layers->sprite).x <= -WIDTH)
-            layers->pos.x = 0;
-        layers = layers->next;
-    }
-}
+#include "../includes/loaders.h"
 
 map_col *next_col(map_info *map, map_col *last, map_col *actual, \
     sfVector2f first_pos)
@@ -52,8 +33,7 @@ int move_blocks(int direction, int speed, map_info *map)
 {
     map_col *last = map->data;
     map_col *actual = map->data;
-    map_col *temp = NULL;
-    sfVector2f offset;// = {speed * direction, 0};
+    sfVector2f offset;
     sfVector2f first_pos;
 
     while (actual != NULL) {
@@ -71,4 +51,39 @@ int move_blocks(int direction, int speed, map_info *map)
         actual = actual->next;
     }
     return 0;
+}
+
+int display_move_map(map_info *map, sfRenderWindow *window)
+{
+    map_col *actual = NULL;
+
+    if (move_blocks(1, 5, map) == 1)
+        return 1;
+    actual = map->data;
+    while (actual != NULL) {
+        for (int i = 0; i < MAP_HEIGHT; i++)
+            sfRenderWindow_drawSprite(window, actual->col[i].sprite, NULL);
+        actual = actual->next;
+    }
+    return 0;
+}
+
+void display_parallax(parallax *layers, sfRenderWindow *window)
+{
+    sfVector2f go_right;
+    sfVector2f go_left;
+
+    go_right.x = WIDTH;
+    go_left.x = -WIDTH;
+    while (layers != NULL) {
+        sfRenderWindow_drawSprite(window, layers->sprite, NULL);
+        sfSprite_move(layers->sprite, go_right);
+        sfRenderWindow_drawSprite(window, layers->sprite, NULL);
+        sfSprite_move(layers->sprite, go_left);
+        layers->pos.x -= layers->layer / 3.0;
+        sfSprite_setPosition(layers->sprite, layers->pos);
+        if (sfSprite_getPosition(layers->sprite).x <= -WIDTH)
+            layers->pos.x = 0;
+        layers = layers->next;
+    }
 }

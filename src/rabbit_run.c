@@ -11,6 +11,7 @@
 #include "../includes/lib.h"
 #include "../includes/frees.h"
 #include "../includes/utils.h"
+#include "../includes/collisions.h"
 
 void run_rabbit(gameobj *obj, sfClock *clock)
 {

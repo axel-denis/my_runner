@@ -14,11 +14,14 @@
     #include "../includes/lib.h"
     #include "../includes/frees.h"
 
+gameobj *new_entity(const char *path_sprite, sfVector2f pos, int type);
 char *read_map_file(char *map_file);
 sfRenderWindow *create_window(void);
 map_info *map_creator(map_info *map);
 map_col *map_col_reader(char *buffer, int x, int map_len, sfTexture *texture,
                         float last_pos);
+parallax *new_mountain(void);
+parallax *new_industrial(void);
 map_col *map_init(char *buffer, int map_len, sfTexture *texture);
 
 #endif
