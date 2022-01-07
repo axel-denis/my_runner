@@ -39,13 +39,13 @@ int main_menu(sfRenderWindow *window, gameobj *rabbit, map_info *map)
     sfEvent event;
     parallax *bg = new_mountain();
     int condition = 0;
-    sfVector2f pos = {610, 450};
+    sfVector2f pos = {600, 450};
     gameobj *button = new_entity("assets/start.png", pos, 2);
 
     sfMusic_play(map->sounds[0]);
     while (condition == 0) {
         show_menu(window, bg, map->text.text, button);
-        while(sfRenderWindow_pollEvent(window, &event))
+        while (sfRenderWindow_pollEvent(window, &event))
             condition += events(event, window, rabbit, map);
     }
     sfMusic_pause(map->sounds[0]);

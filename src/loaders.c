@@ -39,9 +39,8 @@ sfRenderWindow *create_window(void)
     return window;
 }
 
-map_info *map_creator(void)
+map_info *map_creator(map_info *map)
 {
-    map_info *map = malloc(sizeof(map_info));
     sfVector2f pos = {600, 0};
 
     map->sounds[0] = sfMusic_createFromFile("assets/audio/main_menu.ogg");
@@ -64,7 +63,7 @@ map_info *map_creator(void)
     return map;
 }
 
-map_col *map_col_reader(char *buffer, int x, int map_len, sfTexture *texture,
+map_col *map_col_reader(char *buffer, int x, int map_len, sfTexture *texture, \
                         float last_pos)
 {
     map_col *actual = malloc(sizeof(map_col));

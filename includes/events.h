@@ -17,5 +17,6 @@
 
 int events(sfEvent event, sfRenderWindow *window, gameobj *obj, map_info *map);
 int evts(sfEvent event, sfRenderWindow *window, gameobj *obj, map_info *map);
+int esc_events(sfEvent event, sfRenderWindow *window);
 
 #endif

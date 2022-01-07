@@ -16,7 +16,7 @@
 
 char *read_map_file(char *map_file);
 sfRenderWindow *create_window(void);
-map_info *map_creator(void);
+map_info *map_creator(map_info *map);
 map_col *map_col_reader(char *buffer, int x, int map_len, sfTexture *texture,
                         float last_pos);
 map_col *map_init(char *buffer, int map_len, sfTexture *texture);

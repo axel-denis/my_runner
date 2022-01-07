@@ -58,7 +58,7 @@ map_col *map_col_reader(char *buffer, int x, int map_len, sfTexture *texture,
 
 gameobj *new_entity(const char *path_sprite, sfVector2f pos, int type);
 void animate_rabbit(gameobj *obj, map_info *map, sfClock *clock);
-void move_blocks(int direction, int speed, map_info *map);
+int move_blocks(int direction, int speed, map_info *map);
 
 parallax *new_mountain();
 parallax *new_industrial();

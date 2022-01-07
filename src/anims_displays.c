@@ -20,8 +20,6 @@ void display_parallax(parallax *layers, sfRenderWindow *window)
     go_right.x = WIDTH;
     go_left.x = -WIDTH;
     while (layers != NULL) {
-        printf("layer\n");
-        printf("info : %f\n", sfSprite_getPosition(layers->sprite).x);
         sfRenderWindow_drawSprite(window, layers->sprite, NULL);
         sfSprite_move(layers->sprite, go_right);
         sfRenderWindow_drawSprite(window, layers->sprite, NULL);
@@ -32,10 +30,25 @@ void display_parallax(parallax *layers, sfRenderWindow *window)
             layers->pos.x = 0;
         layers = layers->next;
     }
-    printf("endwhile\n");
 }
 
-void move_blocks(int direction, int speed, map_info *map)
+map_col *next_col(map_info *map, map_col *last, map_col *actual, \
+    sfVector2f first_pos)
+{
+    map_col *temp = actual;
+    last->next = NULL;
+    free_col(temp);
+    map->iteration += 1;
+    temp = map_col_reader(map->buffer, map->iteration,
+                          map->len, map->texture, first_pos.x);
+    if (temp == NULL)
+        return temp;
+    temp->next = map->data;
+    map->data = temp;
+    return temp;
+}
+
+int move_blocks(int direction, int speed, map_info *map)
 {
     map_col *last = map->data;
     map_col *actual = map->data;
@@ -45,17 +58,10 @@ void move_blocks(int direction, int speed, map_info *map)
 
     while (actual != NULL) {
         first_pos = sfSprite_getPosition(actual->col[0].sprite);
-        if (first_pos.x <= (-32 * direction)) {
-            temp = actual;
-            last->next = NULL;
-            free_col(temp);
-            map->iteration += 1;
-            temp = map_col_reader(map->buffer, map->iteration,
-                                  map->len, map->texture, first_pos.x);
-            temp->next = map->data;
-            map->data = temp;
-            actual = temp;
-        }
+        if (first_pos.x <= (-32 * direction))
+            actual = next_col(map, last, actual, first_pos);
+        if (actual == NULL)
+            return 1;
         for (int i = 0; i < MAP_HEIGHT; i++) {
             offset = sfSprite_getPosition(actual->col[i].sprite);
             offset.x = offset.x - speed * direction;
@@ -64,5 +70,5 @@ void move_blocks(int direction, int speed, map_info *map)
         last = actual;
         actual = actual->next;
     }
-    return;
+    return 0;
 }

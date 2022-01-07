@@ -13,7 +13,7 @@
 gameobj *new_entity(const char *path_sprite, sfVector2f pos, int type)
 {
     gameobj *obj = malloc(sizeof(gameobj));
-    sfVector2f scale = {0.5, 0.5};
+    sfVector2f scale = {10, 10};
 
     obj->indice = type;
     obj->velocity.x = 0;

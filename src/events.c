@@ -52,3 +52,16 @@ int events(sfEvent event, sfRenderWindow *window, gameobj *obj, map_info *map)
     }
     return evts(event, window, obj, map);
 }
+
+int esc_events(sfEvent event, sfRenderWindow *window)
+{
+    if (event.type == sfEvtClosed) {
+        sfRenderWindow_close(window);
+        return 1;
+    }
+    if (event.type == sfEvtKeyPressed && event.key.code == sfKeyEscape) {
+        sfRenderWindow_close(window);
+        return 1;
+    }
+    return 0;
+}
