@@ -51,7 +51,7 @@ typedef struct map_info {
     int len;
     sfTexture *texture;
     sfClock *clock;
-    sfMusic *sounds[2];
+    sfMusic *sounds[3];
 } map_info;
 
 map_col *map_col_reader(char *buffer, int x, int map_len, sfTexture *texture,

@@ -20,6 +20,8 @@ void display_parallax(parallax *layers, sfRenderWindow *window)
     go_right.x = WIDTH;
     go_left.x = -WIDTH;
     while (layers != NULL) {
+        printf("layer\n");
+        printf("info : %f\n", sfSprite_getPosition(layers->sprite).x);
         sfRenderWindow_drawSprite(window, layers->sprite, NULL);
         sfSprite_move(layers->sprite, go_right);
         sfRenderWindow_drawSprite(window, layers->sprite, NULL);
@@ -30,6 +32,7 @@ void display_parallax(parallax *layers, sfRenderWindow *window)
             layers->pos.x = 0;
         layers = layers->next;
     }
+    printf("endwhile\n");
 }
 
 void move_blocks(int direction, int speed, map_info *map)

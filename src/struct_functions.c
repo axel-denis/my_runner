@@ -50,7 +50,8 @@ parallax *new_mountain(void)
         actual->layer = i;
         actual->pos = pos;
         actual->sprite = sfSprite_create();
-        sfSprite_setTexture(actual->sprite, sfTexture_createFromFile(paths[i], NULL), sfTrue);
+        sfSprite_setTexture(actual->sprite, \
+            sfTexture_createFromFile(paths[i], NULL), sfTrue);
         sfSprite_setScale(actual->sprite, scale);
         if (i != 6) {
             actual->next = malloc(sizeof(parallax));
@@ -76,7 +77,8 @@ parallax *new_industrial(void)
         actual->layer = i;
         actual->pos = pos;
         actual->sprite = sfSprite_create();
-        sfSprite_setTexture(actual->sprite, sfTexture_createFromFile(paths[i], NULL), sfTrue);
+        sfSprite_setTexture(actual->sprite, \
+            sfTexture_createFromFile(paths[i], NULL), sfTrue);
         sfSprite_setScale(actual->sprite, scale);
         if (i != 4) {
             actual->next = malloc(sizeof(parallax));
