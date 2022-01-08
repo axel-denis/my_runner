@@ -24,9 +24,10 @@ int main_disp(sfRenderWindow *wind, map_info *map, gameobj *obj, parallax *bg)
     char *str = my_nbr_to_str(map->iteration);
 
     display_parallax(bg, wind);
-    display_move_map(map, wind);
-    if (pos.y >= HEIGHT - 80 || pos.y <= 0)
+    if (display_move_map(map, wind) == 1)
         return 2;
+    if (pos.y >= HEIGHT - 80 || pos.y <= 0)
+        return 1;
     if (front_collision(obj, map->data))
         return 1;
     animate_rabbit(obj, map, map->clock);
@@ -52,8 +53,8 @@ int main_process(map_info *map, gameobj *rabbit, sfRenderWindow *window)
     }
     if (end == 1)
         game_over_setup(window, map);
-    //else
-    //    win();
+    else
+        win_setup(window, map);
     free_map(map);
     free_parallax(bg);
     sfRenderWindow_destroy(window);

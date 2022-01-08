@@ -15,8 +15,9 @@
     #include "../includes/frees.h"
     #include "../includes/loaders.h"
 
-void game_over_display(sfSprite *background, sfSprite *title, map_info *map, \
+void end_screen(sfSprite *background, sfSprite *title, map_info *map, \
     sfRenderWindow *window);
 void game_over_setup(sfRenderWindow *window, map_info *map);
+void win_setup(sfRenderWindow *window, map_info *map);
 
 #endif

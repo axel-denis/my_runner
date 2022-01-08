@@ -41,7 +41,7 @@ map_col *map_col_reader(char *buffer, int x, int map_len, sfTexture *texture, \
         actual->col[i].pos.y = i * 32;
         actual->col[i].type = (int) (buffer[(x * CHUNK) + \
             ((map_len * CHUNK + 2) * i)] - '0');
-        if (actual->col[i].type + '0' == '-')
+        if (actual->col[i].type + '0' == '|')
             return NULL;
         actual->col[i].sprite = block_sprite(actual->col[i].type, texture);
         sfSprite_setPosition(actual->col[i].sprite, actual->col[i].pos);
