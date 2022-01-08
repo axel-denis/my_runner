@@ -33,8 +33,6 @@ void move_one_block(map_col *actual, int speed, int direction, map_info *map)
 {
     sfVector2f offset;
     sfIntRect rect;
-    sfTime time = sfClock_getElapsedTime(clock);
-    float seconds = time.microseconds / 1000000.0;
 
     for (int i = 0; i < MAP_HEIGHT; i++) {
         offset = sfSprite_getPosition(actual->col[i].sprite);
@@ -43,13 +41,6 @@ void move_one_block(map_col *actual, int speed, int direction, map_info *map)
         else
             offset.x = offset.x - speed * direction;
         sfSprite_setPosition(actual->col[i].sprite, offset);
-
-        if (actual->col[i].type == 8 && seconds >= 0.08) {
-            printf("animation %f\n", seconds);
-            rect = sfSprite_getTextureRect(actual->col[i].sprite);
-            rect.left = ((rect.left + 32) % 32) + BLOCK_SIZE;
-            sfSprite_setTextureRect(actual->col[i].sprite, rect);
-        }
     }
 }
 

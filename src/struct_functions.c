@@ -13,6 +13,7 @@
 gameobj *new_slime(const char *path_sprite, sfVector2f pos)
 {
     gameobj *obj = malloc(sizeof(gameobj));
+    sfVector2f scale = {2, 2};
 
     obj->indice = 1;
     obj->velocity.x = 0;
@@ -20,10 +21,12 @@ gameobj *new_slime(const char *path_sprite, sfVector2f pos)
     obj->rect.top = 0;
     obj->rect.left = 0;
     obj->rect.width = SLIME_WIDTH;
-    obj->rect.height = SLIME_HEIGHT;
+    obj->rect.height = SLIME_HEIGHT / 2;
     obj->sprite = sfSprite_create();
     obj->texture = sfTexture_createFromFile(path_sprite, NULL);
     sfSprite_setTexture(obj->sprite, obj->texture, sfTrue);
+    sfSprite_setTextureRect(obj->sprite, obj->rect);
+    sfSprite_setScale(obj->sprite, scale);
     sfSprite_setPosition(obj->sprite, pos);
     return obj;
 }

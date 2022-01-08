@@ -18,6 +18,6 @@
     #define RABBIT_WIDTH 81
     #define RABBIT_X 500
     #define RABBIT_COL 42
-    #define SLIME_HEIGHT 23
-    #define SLIME_WIDTH 32
+    #define SLIME_HEIGHT 46
+    #define SLIME_WIDTH 35
 #endif
