@@ -10,6 +10,24 @@
 #include "../includes/consts.h"
 #include "../includes/lib.h"
 
+gameobj *new_slime(const char *path_sprite, sfVector2f pos)
+{
+    gameobj *obj = malloc(sizeof(gameobj));
+
+    obj->indice = 1;
+    obj->velocity.x = 0;
+    obj->velocity.y = 0;
+    obj->rect.top = 0;
+    obj->rect.left = 0;
+    obj->rect.width = SLIME_WIDTH;
+    obj->rect.height = SLIME_HEIGHT;
+    obj->sprite = sfSprite_create();
+    obj->texture = sfTexture_createFromFile(path_sprite, NULL);
+    sfSprite_setTexture(obj->sprite, obj->texture, sfTrue);
+    sfSprite_setPosition(obj->sprite, pos);
+    return obj;
+}
+
 gameobj *new_entity(const char *path_sprite, sfVector2f pos, int type)
 {
     gameobj *obj = malloc(sizeof(gameobj));

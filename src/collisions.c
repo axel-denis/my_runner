@@ -15,19 +15,24 @@
 //Vérifie les collisions pour le dessous du lapin à ses pixels 10 et 70
 //(à 0 et 20 pixels du début et de la fin de la largeur du sprite, pour
 //laisser une tolérance)
-//Vérifie pour les colonnes 42 et 43, où se trouve toujours le lapin
+//Vérifie pour les colonnes ou se trouve l'entité uniquement
 int bottom_collision(gameobj *entity, map_col *map)
 {
-    float sprite_pos_y = sfSprite_getPosition(entity->sprite).y;
+    sfVector2f sprite_pos = sfSprite_getPosition(entity->sprite);
     float block_pos_y = 0.0;
-    int line_to_check = (sprite_pos_y + 61) / 32;
+    int line_to_check = (sprite_pos.y + 61) / 32;
+    int col = RABBIT_COL;
 
-    for (int i = 0; i < RABBIT_COL; i++)
+    if (entity->indice == 1) {
+        col = (int) (WIDTH - sprite_pos.x) / 32;
+        line_to_check = (sprite_pos.y + SLIME_HEIGHT) / 32;
+    }
+    for (int i = 0; i < col; i++)
         map = map->next;
     block_pos_y = sfSprite_getPosition(map->col[line_to_check].sprite).y;
     for (int i = 0; i < 2; i++) {
-        if (sprite_pos_y + 60 >= block_pos_y &&
-            sprite_pos_y + 60 <= block_pos_y + 32 &&
+        if (line_to_check * 32 >= block_pos_y &&
+            line_to_check * 32 <= block_pos_y + 32 &&
             map->col[line_to_check].type > 0)
             return 1;
         map = map->next;
@@ -45,8 +50,8 @@ int soft_bottom_collision(gameobj *entity, map_col *map)
         map = map->next;
     for (int i = 0; i < 4; i++) {
         block_y = sfSprite_getPosition(map->col[line_to_check].sprite).y;
-        if (sprite_pos_y + 60 >= block_y &&
-            sprite_pos_y + 60 <= block_y + 32 &&
+        if (sprite_pos_y + 61 >= block_y &&
+            sprite_pos_y + 61 <= block_y + 32 &&
             map->col[line_to_check].type > 0)
             return 1;
         block_y = sfSprite_getPosition(map->col[line_to_check + 1].sprite).y;

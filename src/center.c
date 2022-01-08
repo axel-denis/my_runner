@@ -30,6 +30,7 @@ int main_disp(sfRenderWindow *wind, map_info *map, gameobj *obj, parallax *bg)
         return 1;
     if (front_collision(obj, map->data))
         return 1;
+    slime_gestion(obj->next, map, wind);
     animate_rabbit(obj, map, map->clock);
     sfText_setString(map->text.text, str);
     sfRenderWindow_drawText(wind, map->text.text, NULL);
@@ -38,11 +39,24 @@ int main_disp(sfRenderWindow *wind, map_info *map, gameobj *obj, parallax *bg)
     return 0;
 }
 
-void slime_gestion(gameobj *slime, map_info *map) {
+void slime_gestion(gameobj *slime, map_info *map, sfRenderWindow *window) {
     sfVector2f pos = sfSprite_getPosition(slime->sprite);
 
-    pos.x += 6;
+    if (slime->velocity.y >= 0 && pos.x > 1 && pos.y < HEIGHT - SLIME_HEIGHT)
+        gravity(slime, map);
+    pos = sfSprite_getPosition(slime->sprite);
+    pos.x -= 8;
+    if (pos.x < -32 || pos.y >= HEIGHT - SLIME_HEIGHT) {
+        pos.x = WIDTH - 200;
+        pos.y = HEIGHT / 2;
+        sfSprite_setPosition(slime->sprite, pos);
+        while (!bottom_collision(slime, map->data) && pos.y < HEIGHT) {
+            pos.y += 1;
+            sfSprite_setPosition(slime->sprite, pos);
+        }
+    }
     sfSprite_setPosition(slime->sprite, pos);
+    sfRenderWindow_drawSprite(window, slime->sprite, NULL);
 }
 
 int main_process(map_info *map, gameobj *rabbit, sfRenderWindow *window)
@@ -76,7 +90,7 @@ int main(void)
     sfRenderWindow *window = create_window();
 
     testpos.x = WIDTH + 1;
-    rabbit->next = new_entity("assets/slime.png", testpos, 1);
+    rabbit->next = new_slime("assets/slime.png", testpos);
     if (main_menu(window, rabbit, map) == -1)
         return 0;
     main_process(map, rabbit, window);

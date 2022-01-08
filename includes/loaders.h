@@ -14,6 +14,7 @@
     #include "../includes/lib.h"
     #include "../includes/frees.h"
 
+gameobj *new_slime(const char *path_sprite, sfVector2f pos);
 gameobj *new_entity(const char *path_sprite, sfVector2f pos, int type);
 char *read_map_file(char *map_file);
 sfRenderWindow *create_window(void);
