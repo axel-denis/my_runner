@@ -37,7 +37,7 @@ void end_screen(sfSprite *background, sfSprite *title, map_info *map, \
 void game_over_setup(sfRenderWindow *window, map_info *map)
 {
     sfSprite *bg = sfSprite_create();
-    sfTexture *bg_color = sfTexture_createFromFile("assets/blank.png", NULL);
+    sfTexture *bg_color = sfTexture_createFromFile("assets/red.png", NULL);
     sfSprite *win = sfSprite_create();
     sfTexture *win_img = sfTexture_createFromFile("assets/gameover.png", NULL);
     sfVector2f screen_scale = {(float) sfRenderWindow_getSize(window).x, \
@@ -60,7 +60,7 @@ void game_over_setup(sfRenderWindow *window, map_info *map)
 void win_setup(sfRenderWindow *window, map_info *map)
 {
     sfSprite *bg = sfSprite_create();
-    sfTexture *bg_color = sfTexture_createFromFile("assets/blank.png", NULL);
+    sfTexture *bg_color = sfTexture_createFromFile("assets/blue.png", NULL);
     sfSprite *win = sfSprite_create();
     sfTexture *win_img = sfTexture_createFromFile("assets/win.png", NULL);
     sfVector2f screen_scale = {(float) sfRenderWindow_getSize(window).x, \

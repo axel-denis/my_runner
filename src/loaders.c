@@ -15,7 +15,7 @@
 char *read_map_file(char *map_file)
 {
     int fd = open(map_file, O_RDONLY);
-    char *buffer = malloc(sizeof(char) * 100000); // euh là pour le coup faudrait trouver mieux x)
+    char *buffer = malloc(sizeof(char) * 100000);
 
     if (fd == -1) {
         my_putstr("can't read !\n");
@@ -88,7 +88,7 @@ map_info *map_creator(map_info *map)
     sfMusic_setVolume(map->sounds[1], 40);
     map->sounds[2] = sfMusic_createFromFile("assets/audio/jump.ogg");
     map->buffer = read_map_file("map.txt");
-    map->texture = sfTexture_createFromFile("./assets/tiles.psd", NULL);
+    map->texture = sfTexture_createFromFile("./assets/tiles.png", NULL);
     map->bg = new_mountain();
     map->len = map_len(map->buffer);
     map->data = map_init(map->buffer, map->len, map->texture);

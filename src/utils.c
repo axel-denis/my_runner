@@ -36,11 +36,20 @@ void set_tile_rectangle(sfSprite *sprite, int top, int left)
     sfSprite_setTextureRect(sprite, rect);
 }
 
+sfSprite *others_blocks(int type, sfSprite *sprite)
+{
+    if (type == 7) {
+        set_tile_rectangle(sprite, BLOCK_SIZE * 8, BLOCK_SIZE * 7);
+        printf("star_created\n");
+    }
+    return sprite;
+}
+
 sfSprite *block_sprite(int type, sfTexture *blocks_texture)
 {
     sfSprite *sprite = sfSprite_create();
 
-    if (type >= 0 && type <= 6)
+    if (type >= 0 && type <= 7)
         sfSprite_setTexture(sprite, blocks_texture, sfTrue);
     if (type == 0)
         set_tile_rectangle(sprite, BLOCK_SIZE * 3, 0);
@@ -56,5 +65,5 @@ sfSprite *block_sprite(int type, sfTexture *blocks_texture)
         set_tile_rectangle(sprite, BLOCK_SIZE * 5, BLOCK_SIZE);
     if (type == 6)
         set_tile_rectangle(sprite, BLOCK_SIZE * 4, BLOCK_SIZE);
-    return sprite;
+    return others_blocks(type, sprite);
 }
