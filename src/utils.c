@@ -38,10 +38,8 @@ void set_tile_rectangle(sfSprite *sprite, int top, int left)
 
 sfSprite *others_blocks(int type, sfSprite *sprite)
 {
-    if (type == 7) {
+    if (type == 7)
         set_tile_rectangle(sprite, BLOCK_SIZE * 8, BLOCK_SIZE * 7);
-        printf("star_created\n");
-    }
     return sprite;
 }
 

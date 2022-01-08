@@ -29,11 +29,34 @@ map_col *next_col(map_info *map, map_col *last, map_col *actual, \
     return temp;
 }
 
+void move_one_block(map_col *actual, int speed, int direction, map_info *map)
+{
+    sfVector2f offset;
+    sfIntRect rect;
+    sfTime time = sfClock_getElapsedTime(clock);
+    float seconds = time.microseconds / 1000000.0;
+
+    for (int i = 0; i < MAP_HEIGHT; i++) {
+        offset = sfSprite_getPosition(actual->col[i].sprite);
+        if (actual->col[i].type == 8)
+            offset.x = offset.x - speed * direction * 1.5;
+        else
+            offset.x = offset.x - speed * direction;
+        sfSprite_setPosition(actual->col[i].sprite, offset);
+
+        if (actual->col[i].type == 8 && seconds >= 0.08) {
+            printf("animation %f\n", seconds);
+            rect = sfSprite_getTextureRect(actual->col[i].sprite);
+            rect.left = ((rect.left + 32) % 32) + BLOCK_SIZE;
+            sfSprite_setTextureRect(actual->col[i].sprite, rect);
+        }
+    }
+}
+
 int move_blocks(int direction, int speed, map_info *map)
 {
     map_col *last = map->data;
     map_col *actual = map->data;
-    sfVector2f offset;
     sfVector2f first_pos;
 
     while (actual != NULL) {
@@ -42,11 +65,7 @@ int move_blocks(int direction, int speed, map_info *map)
             actual = next_col(map, last, actual, first_pos);
         if (actual == NULL)
             return 1;
-        for (int i = 0; i < MAP_HEIGHT; i++) {
-            offset = sfSprite_getPosition(actual->col[i].sprite);
-            offset.x = offset.x - speed * direction;
-            sfSprite_setPosition(actual->col[i].sprite, offset);
-        }
+        move_one_block(actual, speed, direction, map);
         last = actual;
         actual = actual->next;
     }

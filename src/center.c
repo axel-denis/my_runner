@@ -38,6 +38,13 @@ int main_disp(sfRenderWindow *wind, map_info *map, gameobj *obj, parallax *bg)
     return 0;
 }
 
+void slime_gestion(gameobj *slime, map_info *map) {
+    sfVector2f pos = sfSprite_getPosition(slime->sprite);
+
+    pos.x += 6;
+    sfSprite_setPosition(slime->sprite, pos);
+}
+
 int main_process(map_info *map, gameobj *rabbit, sfRenderWindow *window)
 {
     sfEvent event;
@@ -68,6 +75,8 @@ int main(void)
     map_info *map = map_creator(malloc(sizeof(map_info)));
     sfRenderWindow *window = create_window();
 
+    testpos.x = WIDTH + 1;
+    rabbit->next = new_entity("assets/slime.png", testpos, 1);
     if (main_menu(window, rabbit, map) == -1)
         return 0;
     main_process(map, rabbit, window);

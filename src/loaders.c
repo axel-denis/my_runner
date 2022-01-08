@@ -27,7 +27,7 @@ char *read_map_file(char *map_file)
 }
 
 map_col *map_col_reader(char *buffer, int x, int map_len, sfTexture *texture, \
-                        float last_pos)
+    float last_pos)
 {
     map_col *actual = malloc(sizeof(map_col));
 
