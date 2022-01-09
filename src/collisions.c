@@ -18,6 +18,7 @@ int collision_slime(gameobj *rabbit)
     sfVector2f slime_pos = sfSprite_getPosition(rabbit->next->sprite);
 
     rabbit_pos.y += 15;
+    rabbit_pos.x += SLIME_WIDTH;
     if (!(rabbit_pos.x >= slime_pos.x && rabbit_pos.x <= slime_pos.x + 70))
         return 0;
     if (rabbit_pos.y >= slime_pos.y - 42 && rabbit_pos.y <= slime_pos.y - 22) {
