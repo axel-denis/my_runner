@@ -42,6 +42,14 @@ sfSprite *others_blocks(int type, sfSprite *sprite)
         set_tile_rectangle(sprite, BLOCK_SIZE * 8, BLOCK_SIZE * 7);
     if (type == 8)
         set_tile_rectangle(sprite, 0, BLOCK_SIZE * 4);
+    if (type == 9)
+        set_tile_rectangle(sprite, BLOCK_SIZE * 8, BLOCK_SIZE * 1);
+    if (type == 10)
+        set_tile_rectangle(sprite, BLOCK_SIZE * 6, BLOCK_SIZE * 6);
+    if (type == 11)
+        set_tile_rectangle(sprite, BLOCK_SIZE * 6, BLOCK_SIZE * 7);
+    if (type == 12)
+        set_tile_rectangle(sprite, BLOCK_SIZE * 4, BLOCK_SIZE * 3);
     return sprite;
 }
 
@@ -49,7 +57,7 @@ sfSprite *block_sprite(int type, sfTexture *blocks_texture)
 {
     sfSprite *sprite = sfSprite_create();
 
-    if (type >= 0 && type <= 8)
+    if (type >= 0 && type <= 12)
         sfSprite_setTexture(sprite, blocks_texture, sfTrue);
     if (type == 0)
         set_tile_rectangle(sprite, BLOCK_SIZE * 3, 0);
@@ -60,7 +68,7 @@ sfSprite *block_sprite(int type, sfTexture *blocks_texture)
     if (type == 3)
         set_tile_rectangle(sprite, BLOCK_SIZE * 3, BLOCK_SIZE);
     if (type == 4)
-        set_tile_rectangle(sprite, BLOCK_SIZE * 4, BLOCK_SIZE);
+        set_tile_rectangle(sprite, BLOCK_SIZE * 4, BLOCK_SIZE * 2);
     if (type == 5)
         set_tile_rectangle(sprite, BLOCK_SIZE * 5, BLOCK_SIZE);
     if (type == 6)
