@@ -29,10 +29,9 @@ map_col *next_col(map_info *map, map_col *last, map_col *actual, \
     return temp;
 }
 
-void move_one_block(map_col *actual, int speed, int direction, map_info *map)
+void move_one_block(map_col *actual, int speed, int direction)
 {
     sfVector2f offset;
-    sfIntRect rect;
 
     for (int i = 0; i < MAP_HEIGHT; i++) {
         offset = sfSprite_getPosition(actual->col[i].sprite);
@@ -56,7 +55,7 @@ int move_blocks(int direction, int speed, map_info *map)
             actual = next_col(map, last, actual, first_pos);
         if (actual == NULL)
             return 1;
-        move_one_block(actual, speed, direction, map);
+        move_one_block(actual, speed, direction);
         last = actual;
         actual = actual->next;
     }

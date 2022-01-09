@@ -5,7 +5,7 @@
 ## Makefile
 ##
 
-SRC	=	src/center.c				\
+SRC	=	src/center.c			\
 		src/struct_functions.c	\
 		src/anims_displays.c	\
 		src/frees.c				\
@@ -16,6 +16,7 @@ SRC	=	src/center.c				\
 		src/menus.c				\
 		src/rabbit_run.c		\
 		src/endscreens.c		\
+		src/slime.c				\
 
 OBJ		=		$(SRC:.c=.o)
 

@@ -23,5 +23,6 @@ map_col *map_col_reader(char *buffer, int x, int map_len, sfTexture *texture,
                         float last_pos);
 void animate_rabbit(gameobj *obj, map_info *map, sfClock *clock);
 int move_blocks(int direction, int speed, map_info *map);
+void move_one_block(map_col *actual, int speed, int direction);
 
 #endif

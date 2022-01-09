@@ -66,15 +66,20 @@ int soft_bottom_collision(gameobj *entity, map_col *map)
 
 int front_collision(gameobj *entity, map_col *map)
 {
-    float sprite_pos_y = sfSprite_getPosition(entity->sprite).y;
+    sfVector2f sprite_pos = sfSprite_getPosition(entity->sprite);
     float block_pos_y = 0.0;
-    int line_to_check = (sprite_pos_y + 61) / 32 - 1;
+    int line_to_check = (sprite_pos.y + 61) / 32 - 1;
+    int col = RABBIT_COL;
 
-    for (int i = 0; i < RABBIT_COL; i++)
+    if (entity->indice == 1) {
+        col = (int) (WIDTH - sprite_pos.x) / 32 + 2;
+        line_to_check = (sprite_pos.y + SLIME_HEIGHT) / 32 - 1;
+    }
+    for (int i = 0; i < col; i++)
         map = map->next;
     block_pos_y = sfSprite_getPosition(map->col[line_to_check].sprite).y;
-    if (sprite_pos_y + 30 >= block_pos_y &&
-        sprite_pos_y + 30 <= block_pos_y + 32 &&
+    if (line_to_check * 32 >= block_pos_y &&
+        line_to_check * 32 <= block_pos_y + 32 &&
         map->col[line_to_check].type > 0)
         return 1;
     return 0;
