@@ -34,7 +34,7 @@ int map_check(char *buffer)
 
     if (buffer == NULL)
         return 1;
-    for (int i = 0; buffer[i]; i++) {
+    for (int i = 0; buffer[i] != '\0'; i++) {
         line_len += 1;
         if (buffer[i] == '\n' && buffer[i - 1] == '|' && last_line_len != 0 \
             && line_len != last_line_len)
