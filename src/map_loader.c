@@ -11,6 +11,7 @@
 #include "../includes/lib.h"
 #include "../includes/utils.h"
 #include "../includes/loaders.h"
+#include "../includes/effects.h"
 
 char *read_map_file(char *map_file)
 {
@@ -44,7 +45,8 @@ map_col *map_col_reader(char *buffer, int x, int map_len, sfTexture *texture, \
         if (actual->col[i].type + '0' == '|')
             return NULL;
         actual->col[i].sprite = block_sprite(actual->col[i].type, texture);
-        sfSprite_setPosition(actual->col[i].sprite, actual->col[i].pos);
+        //sfSprite_setPosition(actual->col[i].sprite, actual->col[i].pos);
+        set_effect(actual, actual->col[i].pos, i);
     }
     return actual;
 }

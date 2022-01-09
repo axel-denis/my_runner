@@ -12,6 +12,7 @@
 #include "../includes/frees.h"
 #include "../includes/utils.h"
 #include "../includes/loaders.h"
+#include "../includes/effects.h"
 
 map_col *next_col(map_info *map, map_col *last, map_col *actual, \
     sfVector2f first_pos)
@@ -65,6 +66,7 @@ int display_move_map(map_info *map, sfRenderWindow *window)
 
     if (move_blocks(1, 5, map) == 1)
         return 1;
+    blocks_effect(map->data);
     actual = map->data;
     while (actual != NULL) {
         for (int i = 0; i < MAP_HEIGHT; i++)

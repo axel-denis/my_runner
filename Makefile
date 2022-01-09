@@ -18,6 +18,7 @@ SRC	=	src/center.c			\
 		src/endscreens.c		\
 		src/slime.c				\
 		src/loaders.c			\
+		src/effects.c			\
 
 OBJ		=		$(SRC:.c=.o)
 
