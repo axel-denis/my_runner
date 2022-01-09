@@ -61,7 +61,7 @@ int usage(void)
     my_putstr("Created by Axel Denis for Epitech.\n");
     my_putstr("\nUSAGE\n ./my_runner map.txt\n");
     my_putstr("\nOPTIONS\n -h\tprints the usage and quit.\n");
-    my_putstr("\nUSER INTERACTIONS\n SPACE_KEY\tjump.\nESCAPE_KEY\texit game.");
-    my_putstr("\n\n");
+    my_putstr("\nUSER INTERACTIONS\n SPACE_KEY\tjump.\nESCAPE_KEY\texit game");
+    my_putstr(".\n\n");
     return 0;
 }

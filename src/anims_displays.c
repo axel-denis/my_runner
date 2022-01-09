@@ -21,8 +21,8 @@ map_col *next_col(map_info *map, map_col *last, map_col *actual, \
     last->next = NULL;
     free_col(temp);
     map->iteration += 1;
-    temp = map_col_reader(map->buffer, map->iteration,
-                          map->len, map->texture, first_pos.x);
+    temp = map_col_reader(map->buffer, map->iteration, \
+        map->len, map->texture, first_pos.x);
     if (temp == NULL)
         return temp;
     temp->next = map->data;

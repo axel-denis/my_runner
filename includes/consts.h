@@ -13,7 +13,7 @@
     #define PARALLAX_HEIGHT 216
     #define MAP_HEIGHT 32
     #define BLOCK_SIZE 32
-    #define CHUNK 4 //la taille que prends un block dans le buffer
+    #define CHUNK 4
     #define INITIAL_MAP_WIDTH 61
     #define RABBIT_WIDTH 81
     #define RABBIT_X 500

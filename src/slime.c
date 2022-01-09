@@ -38,25 +38,25 @@ sfVector2f find_ground(gameobj *slime, map_info *map)
     return pos;
 }
 
-void slime_gestion(gameobj *slime, map_info *map, sfRenderWindow *window)
+void slime_gestion(gameobj *slim, map_info *map, sfRenderWindow *window)
 {
-    sfVector2f pos = sfSprite_getPosition(slime->sprite);
+    sfVector2f pos = sfSprite_getPosition(slim->sprite);
     sfTime time = sfClock_getElapsedTime(map->clock);
     float seconds = time.microseconds / 1000000.0;
 
-    if (slime->velocity.y >= 0 && pos.x > 1 && pos.y < HEIGHT - SLIME_HEIGHT)
-        gravity(slime, map);
-    pos = sfSprite_getPosition(slime->sprite);
-    if (pos.x > 15 && !front_collision(slime, map->data))
+    if (slim->velocity.y >= 0 && pos.x > 1 && pos.y < HEIGHT - SLIME_HEIGHT)
+        gravity(slim, map);
+    pos = sfSprite_getPosition(slim->sprite);
+    if (pos.x > 15 && !front_collision(slim, map->data))
         pos.x -= 8;
     else
         pos.x -= 6;
     if (pos.x < -32 || pos.y >= HEIGHT - SLIME_HEIGHT)
-        pos = find_ground(slime, map);
+        pos = find_ground(slim, map);
     if (seconds >= 0.1 && !(pos.x < -32)) {
-        slime->rect.left = (slime->rect.left + SLIME_WIDTH) % (SLIME_WIDTH * 4);
-        sfSprite_setTextureRect(slime->sprite, slime->rect);
+        slim->rect.left = (slim->rect.left + SLIME_WIDTH) % (SLIME_WIDTH * 4);
+        sfSprite_setTextureRect(slim->sprite, slim->rect);
     }
-    sfSprite_setPosition(slime->sprite, pos);
-    sfRenderWindow_drawSprite(window, slime->sprite, NULL);
+    sfSprite_setPosition(slim->sprite, pos);
+    sfRenderWindow_drawSprite(window, slim->sprite, NULL);
 }

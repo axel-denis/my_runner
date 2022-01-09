@@ -60,18 +60,31 @@ int main_process(map_info *map, gameobj *rabbit, sfRenderWindow *window)
         game_over_setup(window, map);
     else if (end == 2)
         win_setup(window, map);
-    free_map(map);
     free_parallax(bg);
-    sfRenderWindow_destroy(window);
     return 0;
+}
+
+void main_start(map_info *map)
+{
+    sfVector2f testpos = {500, 300};
+    gameobj *rabbit;
+    sfRenderWindow *window;
+
+    rabbit = new_entity("assets/rabbit.png", testpos, 0);
+    testpos.x = WIDTH + 1;
+    window = create_window();
+    rabbit->next = new_slime("assets/slime.png", testpos);
+    if (main_menu(window, rabbit, map) != -1)
+        main_process(map, rabbit, window);
+    free_map(map);
+    sfRenderWindow_destroy(window);
+    free_entity(rabbit->next);
+    free_entity(rabbit);
 }
 
 int main(int ac, char **av)
 {
-    sfVector2f testpos = {500, 300};
-    gameobj *rabbit;
     map_info *map;
-    sfRenderWindow *window;
 
     if (ac != 2)
         return 84;
@@ -82,13 +95,6 @@ int main(int ac, char **av)
         my_putstr("Error while loading this map.\n");
         return 84;
     }
-    rabbit = new_entity("assets/rabbit.png", testpos, 0);
-    testpos.x = WIDTH + 1;
-    window = create_window();
-    rabbit->next = new_slime("assets/slime.png", testpos);
-    if (main_menu(window, rabbit, map) == -1)
-        return 0;
-    main_process(map, rabbit, window);
-    free_entity(rabbit);
+    main_start(map);
     return 0;
 }
