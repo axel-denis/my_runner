@@ -12,6 +12,23 @@
 #include "../includes/frees.h"
 #include "../includes/loaders.h"
 
+int collision_slime(gameobj *rabbit)
+{
+    sfVector2f rabbit_pos = sfSprite_getPosition(rabbit->sprite);
+    sfVector2f slime_pos = sfSprite_getPosition(rabbit->next->sprite);
+
+    rabbit_pos.y += 15;
+    if (!(rabbit_pos.x >= slime_pos.x && rabbit_pos.x <= slime_pos.x + 70))
+        return 0;
+    if (rabbit_pos.y >= slime_pos.y - 42 && rabbit_pos.y <= slime_pos.y - 22) {
+        rabbit->velocity.y = -20;
+        return 0;
+    }
+    if (rabbit_pos.y >= slime_pos.y - 32 && rabbit_pos.y <= slime_pos.y + 32)
+        return 1;
+    return 0;
+}
+
 //Vérifie les collisions pour le dessous du lapin à ses pixels 10 et 70
 //(à 0 et 20 pixels du début et de la fin de la largeur du sprite, pour
 //laisser une tolérance)

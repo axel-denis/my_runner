@@ -54,3 +54,14 @@ int main_menu(sfRenderWindow *window, gameobj *rabbit, map_info *map)
     free_entity(button);
     return condition;
 }
+
+int usage(void)
+{
+    my_putstr("Finite runner created with CSFML\n");
+    my_putstr("Created by Axel Denis for Epitech.\n");
+    my_putstr("\nUSAGE\n ./my_runner map.txt\n");
+    my_putstr("\nOPTIONS\n -h\tprints the usage and quit.\n");
+    my_putstr("\nUSER INTERACTIONS\n SPACE_KEY\tjump.\nESCAPE_KEY\texit game.");
+    my_putstr("\n\n");
+    return 0;
+}

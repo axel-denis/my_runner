@@ -19,22 +19,6 @@
 #include "../includes/anims_displays.h"
 #include "../includes/slime.h"
 
-int collision_slime(gameobj *rabbit)
-{
-    sfVector2f rabbit_pos = sfSprite_getPosition(rabbit->sprite);
-    sfVector2f slime_pos = sfSprite_getPosition(rabbit->next->sprite);
-
-    rabbit_pos.y += 15;
-    if (!(rabbit_pos.x >= slime_pos.x && rabbit_pos.x <= slime_pos.x + 70))
-        return 0;
-    if (rabbit_pos.y >= slime_pos.y - 42 && rabbit_pos.y <= slime_pos.y - 22) {
-        rabbit->velocity.y = -20;
-        return 0;
-    }
-    if (rabbit_pos.y >= slime_pos.y - 32 && rabbit_pos.y <= slime_pos.y + 32)
-        return 1;
-    return 0;
-}
 int main_disp(sfRenderWindow *wind, map_info *map, gameobj *obj, parallax *bg)
 {
     sfVector2f pos = sfSprite_getPosition(obj->sprite);
@@ -81,14 +65,25 @@ int main_process(map_info *map, gameobj *rabbit, sfRenderWindow *window)
     return 0;
 }
 
-int main(void)
+int main(int ac, char **av)
 {
     sfVector2f testpos = {500, 300};
-    gameobj *rabbit = new_entity("assets/rabbit.png", testpos, 0);
-    map_info *map = map_creator(malloc(sizeof(map_info)));
-    sfRenderWindow *window = create_window();
+    gameobj *rabbit;
+    map_info *map;
+    sfRenderWindow *window;
 
+    if (ac != 2)
+        return 84;
+    if (av[1][0] == '-' && av[1][1] == 'h' && av[1][2] == '\0')
+        return usage();
+    map = map_creator(malloc(sizeof(map_info)), av[1]);
+    if (map == NULL) {
+        my_putstr("Error while loading this map.\n");
+        return 84;
+    }
+    rabbit = new_entity("assets/rabbit.png", testpos, 0);
     testpos.x = WIDTH + 1;
+    window = create_window();
     rabbit->next = new_slime("assets/slime.png", testpos);
     if (main_menu(window, rabbit, map) == -1)
         return 0;

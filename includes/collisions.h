@@ -18,5 +18,6 @@
 int bottom_collision(gameobj *entity, map_col *map);
 int soft_bottom_collision(gameobj *entity, map_col *map);
 int front_collision(gameobj *entity, map_col *map);
+int collision_slime(gameobj *rabbit);
 
 #endif

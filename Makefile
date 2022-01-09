@@ -9,7 +9,7 @@ SRC	=	src/center.c			\
 		src/struct_functions.c	\
 		src/anims_displays.c	\
 		src/frees.c				\
-		src/loaders.c			\
+		src/map_loader.c		\
 		src/utils.c				\
 		src/collisions.c		\
 		src/events.c			\
@@ -17,6 +17,7 @@ SRC	=	src/center.c			\
 		src/rabbit_run.c		\
 		src/endscreens.c		\
 		src/slime.c				\
+		src/loaders.c			\
 
 OBJ		=		$(SRC:.c=.o)
 
