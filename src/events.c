@@ -12,6 +12,7 @@
 #include "../includes/frees.h"
 #include "../includes/loaders.h"
 #include "../includes/collisions.h"
+#include "../includes/endscreens.h"
 
 int evts(sfEvent event, sfRenderWindow *window, gameobj *obj, map_info *map)
 {
@@ -55,6 +56,8 @@ int events(sfEvent event, sfRenderWindow *window, gameobj *obj, map_info *map)
         }
         return 0;
     }
+    if (event.type == sfEvtKeyPressed && event.key.code == sfKeyP)
+        pause_setup(window, map);
     return evts(event, window, obj, map);
 }
 
@@ -66,6 +69,9 @@ int esc_events(sfEvent event, sfRenderWindow *window)
     }
     if (event.type == sfEvtKeyPressed && event.key.code == sfKeyEscape) {
         sfRenderWindow_close(window);
+        return 1;
+    }
+    if (event.type == sfEvtKeyPressed && event.key.code == sfKeyP) {
         return 1;
     }
     return 0;

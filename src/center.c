@@ -47,10 +47,12 @@ int main_process(map_info *map, gameobj *rabbit, sfRenderWindow *window)
 {
     sfEvent event;
     parallax *bg = new_industrial();
+    sfVector2f pos = {33, 0};
     int end = 0;
 
     while (sfRenderWindow_isOpen(window) && end == 0) {
         sfRenderWindow_clear(window, sfBlack);
+        sfText_setPosition(map->text.text, pos);
         end = main_disp(window, map, rabbit, bg);
         sfRenderWindow_display(window);
         while (sfRenderWindow_pollEvent(window, &event))

@@ -79,3 +79,26 @@ void win_setup(sfRenderWindow *window, map_info *map)
     sfTexture_destroy(bg_color);
     sfTexture_destroy(win_img);
 }
+
+void pause_setup(sfRenderWindow *window, map_info *map)
+{
+    sfSprite *bg = sfSprite_create();
+    sfTexture *bg_color = sfTexture_createFromFile("assets/blue.png", NULL);
+    sfSprite *win = sfSprite_create();
+    sfTexture *pause_img = sfTexture_createFromFile("assets/pause.png", NULL);
+    sfVector2f screen_scale = {(float) sfRenderWindow_getSize(window).x, \
+        (float) sfRenderWindow_getSize(window).y};
+    sfVector2f scale_win = {6, 6};
+    sfVector2f win_pos = {750, 100};
+
+    sfSprite_setTexture(bg, bg_color, sfTrue);
+    sfSprite_setScale(bg, screen_scale);
+    sfSprite_setTexture(win, pause_img, sfTrue);
+    sfSprite_setScale(win, scale_win);
+    sfSprite_setPosition(win, win_pos);
+    end_screen(bg, win, map, window);
+    sfSprite_destroy(bg);
+    sfSprite_destroy(win);
+    sfTexture_destroy(bg_color);
+    sfTexture_destroy(pause_img);
+}
