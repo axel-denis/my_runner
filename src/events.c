@@ -16,9 +16,14 @@
 int evts(sfEvent event, sfRenderWindow *window, gameobj *obj, map_info *map)
 {
     sfVector2i pos = sfMouse_getPositionRenderWindow(window);
+    sfVector2u size = sfRenderWindow_getSize(window);
+    sfVector2f ratio;
 
-    if (event.type == sfEvtMouseButtonPressed && pos.x > 620 && pos.x < 1235 \
-        && pos.y > 450 && pos.y < 650) {
+    ratio.x = size.x / (float) WIDTH;
+    ratio.y = size.y / (float) HEIGHT;
+    if (event.type == sfEvtMouseButtonPressed && pos.x > 620 * ratio.x \
+        && pos.x < 1235 * ratio.x && pos.y > 450 * ratio.y \
+        && pos.y < 650 * ratio.y) {
         return 2;
     }
     if (event.type == sfEvtMouseButtonPressed) {

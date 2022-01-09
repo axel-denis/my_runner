@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** bsmyprintf
+** my_put_nbr
 ** File description:
 ** my_put_nbr.c
 */
