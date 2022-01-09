@@ -34,7 +34,8 @@ int main_disp(sfRenderWindow *wind, map_info *map, gameobj *obj, parallax *bg)
     slime_gestion(obj->next, map, wind);
     if (collision_slime(obj) == 1)
         return 1;
-    animate_rabbit(obj, map, map->clock);
+    if (animate_rabbit(obj, map, map->clock) == 2)
+        return 1;
     sfText_setString(map->text.text, str);
     sfRenderWindow_drawText(wind, map->text.text, NULL);
     sfRenderWindow_drawSprite(wind, obj->sprite, NULL);

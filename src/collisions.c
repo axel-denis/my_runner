@@ -51,7 +51,7 @@ int bottom_collision(gameobj *entity, map_col *map)
         if (line_to_check * 32 >= block_pos_y &&
             line_to_check * 32 <= block_pos_y + 32 &&
             map->col[line_to_check].type > 0)
-            return 1;
+            return 1 + (map->col[line_to_check].type == 8);
         map = map->next;
     }
     return 0;

@@ -17,7 +17,7 @@
 
 void run_rabbit(gameobj *obj, sfClock *clock);
 void velocity_up(gameobj *obj);
-void gravity(gameobj *obj, map_info *map);
-void animate_rabbit(gameobj *obj, map_info *map, sfClock *clock);
+int gravity(gameobj *obj, map_info *map);
+int animate_rabbit(gameobj *obj, map_info *map, sfClock *clock);
 
 #endif

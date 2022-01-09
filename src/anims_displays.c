@@ -35,10 +35,7 @@ void move_one_block(map_col *actual, int speed, int direction)
 
     for (int i = 0; i < MAP_HEIGHT; i++) {
         offset = sfSprite_getPosition(actual->col[i].sprite);
-        if (actual->col[i].type == 8)
-            offset.x = offset.x - speed * direction * 1.5;
-        else
-            offset.x = offset.x - speed * direction;
+        offset.x = offset.x - speed * direction;
         sfSprite_setPosition(actual->col[i].sprite, offset);
     }
 }

@@ -40,6 +40,8 @@ sfSprite *others_blocks(int type, sfSprite *sprite)
 {
     if (type == 7)
         set_tile_rectangle(sprite, BLOCK_SIZE * 8, BLOCK_SIZE * 7);
+    if (type == 8)
+        set_tile_rectangle(sprite, 0, BLOCK_SIZE * 4);
     return sprite;
 }
 
@@ -47,7 +49,7 @@ sfSprite *block_sprite(int type, sfTexture *blocks_texture)
 {
     sfSprite *sprite = sfSprite_create();
 
-    if (type >= 0 && type <= 7)
+    if (type >= 0 && type <= 8)
         sfSprite_setTexture(sprite, blocks_texture, sfTrue);
     if (type == 0)
         set_tile_rectangle(sprite, BLOCK_SIZE * 3, 0);

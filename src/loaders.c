@@ -30,15 +30,15 @@ int map_check(char *buffer)
 {
     int lines_count = 0;
     int last_line_len = 0;
-    int line_len;
+    int line_len = 0;
 
     if (buffer == NULL)
         return 1;
     for (int i = 0; buffer[i]; i++) {
-        line_len++;
+        line_len += 1;
         if (buffer[i] == '\n' && buffer[i - 1] == '|' && last_line_len != 0 \
             && line_len != last_line_len)
-            return 1;
+                return 1;
         else if (buffer[i] == '\n' && buffer[i - 1] == '|') {
             last_line_len = line_len;
             line_len = 0;

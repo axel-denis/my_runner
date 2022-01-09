@@ -52,7 +52,7 @@ void velocity_up(gameobj *obj)
     obj->velocity.y /= 1.2;
 }
 
-void gravity(gameobj *obj, map_info *map)
+int gravity(gameobj *obj, map_info *map)
 {
     float to_y = sfSprite_getPosition(obj->sprite).y + obj->velocity.y;
     float y_pos = sfSprite_getPosition(obj->sprite).y;
@@ -60,25 +60,29 @@ void gravity(gameobj *obj, map_info *map)
 
     if (obj->velocity.y == 0.0) {
         obj->velocity.y = 1.0;
-        return;
+        return 0;
     }
     while (y_pos < to_y && !bottom_collision(obj, map->data)) {
         y_pos++;
         sfSprite_move(obj->sprite, move_vect);
     }
-    if (bottom_collision(obj, map->data))
+    if (bottom_collision(obj, map->data) == 1)
         obj->velocity.y = 0;
     else if (obj->velocity.y > 0 && obj->velocity.y < 20)
         obj->velocity.y *= 1.2;
     else
         obj->velocity.y /= 1.2;
+    return bottom_collision(obj, map->data);
 }
 
-void animate_rabbit(gameobj *obj, map_info *map, sfClock *clock)
+int animate_rabbit(gameobj *obj, map_info *map, sfClock *clock)
 {
+    int state = 0;
+
     run_rabbit(obj, clock);
     if (obj->velocity.y >= 0)
-        gravity(obj, map);
+        state = gravity(obj, map);
     else
         velocity_up(obj);
+    return state;
 }

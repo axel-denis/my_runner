@@ -15,13 +15,13 @@
 char *read_map_file(char *map_file)
 {
     int fd = open(map_file, O_RDONLY);
-    char *buffer = malloc(sizeof(char) * 100000);
+    char *buffer = malloc(sizeof(char) * 1000000);
 
     if (fd == -1) {
         my_putstr("can't read this file!\n");
         return NULL;
     }
-    read(fd, buffer, 100000);
+    read(fd, buffer, 1000000);
     close(fd);
     return buffer;
 }
