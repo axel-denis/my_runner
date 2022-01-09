@@ -88,8 +88,8 @@ void pause_setup(sfRenderWindow *window, map_info *map)
     sfTexture *pause_img = sfTexture_createFromFile("assets/pause.png", NULL);
     sfVector2f screen_scale = {(float) sfRenderWindow_getSize(window).x, \
         (float) sfRenderWindow_getSize(window).y};
-    sfVector2f scale_win = {6, 6};
-    sfVector2f win_pos = {750, 100};
+    sfVector2f scale_win = {8, 8};
+    sfVector2f win_pos = {775, 100};
 
     sfSprite_setTexture(bg, bg_color, sfTrue);
     sfSprite_setScale(bg, screen_scale);

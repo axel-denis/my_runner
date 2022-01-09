@@ -56,7 +56,8 @@ int events(sfEvent event, sfRenderWindow *window, gameobj *obj, map_info *map)
         }
         return 0;
     }
-    if (event.type == sfEvtKeyPressed && event.key.code == sfKeyP)
+    if (event.type == sfEvtKeyPressed && event.key.code == sfKeyP && \
+        map->iteration > INITIAL_MAP_WIDTH + 2)
         pause_setup(window, map);
     return evts(event, window, obj, map);
 }
